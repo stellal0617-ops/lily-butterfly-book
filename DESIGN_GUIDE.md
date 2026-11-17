@@ -12,7 +12,8 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 5. **Page-turn animation:** Option A — realistic paper page-flip with a visible turning sheet (not a simple fade or slide). Respect reduced-motion preferences with a non-animated fallback.
 6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress when possible; the precise persistence method is still to be determined.
 7. **Responsive design:** Option A — desktops and sufficiently wide landscape tablets show the full two-page spread; narrow/portrait mobile screens switch to a single-page reading view. Full-spread games must use a usable narrow-screen adaptation within the same site, with readable text and touch targets. No external navigation or forced landscape orientation. Breakpoints and exact game reflow are yet to be specified.
-8. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+8. **Story-page composition:** Option C — mixed layout. Each story page or spread can have its own composition (image-led, text-led, split, or integrated) rather than a mandatory illustration-left/text-right template. All variations must stay within the shared 4:5 page / 8:5 spread geometry, remain readable, and respect book spine and safe margins. This flexibility does not change the required full-spread design for mini-games.
+9. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
 
 ## Reference design coordinate system (not fixed screen pixel sizes)
 
@@ -33,7 +34,7 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 
 ## Decisions still open
 
-1. Text / illustration layout and safe areas.
+1. Text safe areas, minimum readability standards and exact margins (mixed compositions confirmed).
 2. Lily & Pip character bible, illustration style, color palette, typography.
 3. Number of spreads per chapter and transitions.
 4. Specific component API for spread games and progress persistence.
