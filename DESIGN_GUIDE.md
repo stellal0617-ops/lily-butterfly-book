@@ -10,12 +10,13 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 3. **Spread aspect ratio:** Two side-by-side pages form an **8:5 landscape** spread, excluding the optional spine and outer frame.
 4. **Game placement:** **Option B — full-spread interactive games**. A game can use both left and right pages as one coherent interactive canvas, inside the existing storybook website. No navigation to another website.
 5. **Page-turn animation:** Option A — realistic paper page-flip with a visible turning sheet (not a simple fade or slide). Respect reduced-motion preferences with a non-animated fallback.
-6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress when possible; the precise persistence method is still to be determined.
+6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress within the current reading session as specified in the session-state rule below.
 7. **Responsive design:** Option A — desktops and sufficiently wide landscape tablets show the full two-page spread; narrow/portrait mobile screens switch to a single-page reading view. Full-spread games must use a usable narrow-screen adaptation within the same site, with readable text and touch targets. No external navigation or forced landscape orientation. Breakpoints and exact game reflow are yet to be specified.
 8. **Story-page composition:** Option C — mixed layout. Each story page or spread can have its own composition (image-led, text-led, split, or integrated) rather than a mandatory illustration-left/text-right template. All variations must stay within the shared 4:5 page / 8:5 spread geometry, remain readable, and respect book spine and safe margins. This flexibility does not change the required full-spread design for mini-games.
 9. **Content safe area:** Option A — compact. Keep critical story text, primary character details, and interactive targets at least **5% of each page's width/height** from the outer edges (reference page 800×1000 → 40 horizontal and 50 vertical units). Full-bleed backgrounds and decorative illustrations may extend to all edges. Treat the center spine/gutter as a separate obstruction: do not place vital text or hit targets across it, and review spread games for spine-safe hit areas.
 10. **Chapter length:** Option B — each of the three chapters may contain **4–7 two-page spreads** (8–14 individual pages), chosen by the chapter author. Keep one continuous story across all three chapters; the number of spreads does not have to match between chapters. Covers and ending pages are outside each chapter's allowance. Each chapter must include a game spread and a transition into the next chapter, but exact pacing and content are flexible.
-11. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+11. **Game progress (Option B):** Preserve each game's partial progress when readers freely turn to another spread and then return **during the same reading session**. No account, backend, or cross-visit save is required. A page change must not reset unfinished game state. Refreshing or closing the tab may reset progress. The shared application layer should own session game state; chapter games must communicate their progress through the integration lead's agreed API once implemented. A deliberate Restart/Reset control may reset a game.
+12. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
 
 ## Reference design coordinate system (not fixed screen pixel sizes)
 
@@ -33,14 +34,14 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 - **The current shared `Book.jsx` is a single-page prototype.** It does NOT yet implement a true two-page spread or spread-level game rendering.
 - **Do not make independent incompatible changes to `Book.jsx` or `App.jsx`.** The integration lead must upgrade the shared interface first; then the team should agree on a shared `Spread` / full-spread game contract.
 - Navigation must remain freely available during games; gameplay clicks/touches/drags must not accidentally trigger a page flip. Only explicit navigation controls or deliberate page-turn gestures should turn pages.
-- Keep chapter state and game results usable after returning to the spread; exact persistence strategy has not yet been confirmed.
+- Keep chapter state and game results usable after returning to the spread during the same reading session. Do not assume component-local state survives unmounting; the integration lead will define a shared state API for chapter developers.
 
 ## Decisions still open
 
 1. Text minimum sizes/readability standards and exact extra spine clearance (5% page-edge safe margin confirmed).
 2. Lily & Pip character bible, illustration style, color palette, typography (**visual style decision deferred**, not approved yet).
 3. Detailed storytelling beats, game spread positions, and chapter-to-chapter transitions (4–7 spreads per chapter confirmed).
-4. Specific component API for spread games and progress persistence.
+4. Specific component API for spread games and in-session progress state (persistence behavior confirmed).
 5. Exact responsive breakpoints and narrow-screen reflow for each full-spread game.
 
 ## Collaboration
