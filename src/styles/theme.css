@@ -42,3 +42,51 @@
 .pip-reaction{margin-top:auto;background:#fff7e0e8;border-radius:30px;padding:7px 19px;font:12px Arial;color:#54715b}.pip-reaction span{margin-left:7px}
 @media(max-width:680px){.reader-stage{width:100%;padding:12px 12px 22px}.reader-heading{font-size:9px;letter-spacing:1.3px;margin-bottom:16px}.reader-subhead{display:none}.reader-mini-label{font-size:8px}.book-object{padding:8px;border-radius:10px}.book-object .book-viewport{height:auto;min-height:0;aspect-ratio:4/5;max-height:none}.spread{width:200%;transform:none}.book-page{width:50%}.spread-holder{overflow:hidden}.spread:has(.mobile-page-off.book-page-left){transform:translateX(-50%)}.mobile-page-off{visibility:hidden}.center-gutter{display:none}.book-corner{width:47px;height:47px;font-size:22px}.paper-turn{width:100%}.turn-next,.turn-previous{left:0}.page-cap,.page-bottom{font-size:8px}.story-copy h2{font-size:clamp(25px,7vw,40px)}.story-copy p{font-size:clamp(15px,3.7vw,20px)}.chapter-kicker{font-size:11px}.story-copy .story-subtitle{font-size:15px}.art-bloom{font-size:90px}.art-lily{font-size:90px}.art-pip{font-size:65px}.art-butterfly{font-size:65px}.cover-title h1{font-size:clamp(29px,8vw,43px)}.cover-title>p{font-size:16px}.spread-is-game{transform:none!important;width:100%}.spread-is-game .book-page{display:none}.spread-game-overlay{inset:6% 4% 5%;max-width:100%;gap:6px}.game-story-heading{padding:8px 12px}.game-story-heading h2{font-size:clamp(23px,6vw,32px)}.game-area{width:100%;max-height:74%;padding:10px 8px;border-radius:14px}.spread-game-overlay .choice-grid{gap:5px}.spread-game-overlay .choice-tile{padding:6px;min-height:85px;font-size:11px}.spread-game-overlay .choice-icon{font-size:29px}.spread-game-overlay .mini-game,.spread-game-overlay .game-feedback{font-size:12px}.pip-reaction{font-size:10px;padding:6px}.reader-bottom{font-size:9px;letter-spacing:.6px}.navigation-hint{font-size:11px}.game-ambient-copy{display:none}}
 @media(prefers-reduced-motion:reduce){.paper-turn{animation:none!important;opacity:.25}.book-corner{transition:none!important}}
+
+
+/* === StPageFlip proof of concept (branch demo/stpageflip-paper-curl) === */
+.st-book-stage{position:relative;display:flex;justify-content:center;align-items:center;width:100%;min-height:0;aspect-ratio:8/5;max-width:1120px;margin:auto;padding:9px 14px;background:#b99476;border-radius:15px;box-shadow:0 22px 45px #50634d42;overflow:hidden}
+.st-flipbook{margin:auto}
+.st-flip-leaf{width:100%;height:100%;overflow:hidden;background:#f5eadb}
+.st-flip-leaf .book-page{width:100%;height:100%;display:block}
+.st-flip-leaf .page-inner{width:100%;height:100%;padding:5%}
+.st-flip-leaf .story-copy h2{font-size:clamp(21px,2.7vw,39px)}
+.st-flip-leaf .story-copy p{font-size:clamp(12px,1.45vw,18px)}
+.st-flip-leaf .story-copy .story-subtitle{font-size:clamp(11px,1.25vw,17px)}
+.st-flip-leaf .artwork{width:100%}
+.st-flip-leaf .cover-ornament{font-size:22px}
+.st-game-layer{position:absolute;inset:9% 9%;z-index:32;align-items:center;justify-content:center;pointer-events:none}
+.st-game-card{pointer-events:auto;width:min(750px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:8px;background:#fff9edec;border:1px solid #c6d3b8;border-radius:24px;padding:14px 18px;box-shadow:0 18px 40px #52634b4a;overflow:auto}
+.st-game-card .game-story-heading{text-align:center;box-shadow:none;padding:3px;background:transparent}
+.st-game-card .game-area{padding:8px 12px;box-shadow:none;border:0;background:transparent;max-height:none;overflow:visible;width:100%}
+.st-game-card .mini-game{width:100%;max-width:none;font:14px/1.4 Arial}
+.st-game-card .choice-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.st-game-card .choice-tile{min-height:95px;padding:10px}
+.st-game-card .game-feedback{min-height:33px}
+.st-game-card .pip-reaction{font-size:12px}
+.st-corner{position:absolute;z-index:45;bottom:8px;border:0;width:53px;height:53px;border-radius:9px;background:#fff8eddd;color:#8e7058;font:28px Georgia;box-shadow:0 3px 12px #75645131}
+.st-corner:hover:not(:disabled){background:#f9e6c9}
+.st-corner:disabled{visibility:hidden}
+.st-corner-prev{left:11px}.st-corner-next{right:11px}
+.st-flip-leaf .art-bloom{font-size:clamp(40px,8vw,105px)}
+.st-flip-leaf .art-characters{left:32%}
+@media(max-width:680px){
+ .st-book-stage{aspect-ratio:4/5;padding:5px 4px;max-height:none;border-radius:9px}
+ .st-flipbook{margin:auto}
+ .st-flip-leaf .book-page{width:100%}
+ .st-flip-leaf .story-copy h2{font-size:clamp(22px,6.4vw,38px)}
+ .st-flip-leaf .story-copy p{font-size:clamp(13px,3.4vw,18px)}
+ .st-flip-leaf .art-bloom{font-size:75px}
+ .st-game-layer{inset:7% 3%}
+ .st-game-card{padding:9px 7px;max-height:100%;border-radius:14px;gap:4px}
+ .st-game-card .game-story-heading h2{font-size:clamp(20px,5vw,27px)}
+ .st-game-card .game-area{padding:5px 3px}
+ .st-game-card .mini-game{font-size:12px}
+ .st-game-card .choice-grid{gap:4px}
+ .st-game-card .choice-tile{min-height:70px;padding:4px;font-size:10px}
+ .st-game-card .choice-icon{font-size:26px}
+ .st-game-card .pip-reaction{font-size:10px}
+ .st-corner{width:42px;height:42px;font-size:20px;bottom:6px}
+ .st-corner-prev{left:6px}.st-corner-next{right:6px}
+}
+@media(prefers-reduced-motion:reduce){.st-corner{transition:none}}
