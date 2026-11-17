@@ -39,8 +39,8 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 
 - Existing code exports `chapterNPages` from `src/chapters/chapterN/pages.jsx` and uses a `Content` React component for each page.
 - Existing games receive `onComplete` and call `onComplete('chapterN')`.
-- **The current shared `Book.jsx` is a single-page prototype.** It does NOT yet implement a true two-page spread or spread-level game rendering.
-- **Do not make independent incompatible changes to `Book.jsx` or `App.jsx`.** The integration lead must upgrade the shared interface first; then the team should agree on a shared `Spread` / full-spread game contract.
+- **A first shared two-page demo is now implemented in `src/components/Book.jsx` and `src/App.jsx`.** It includes responsive spreads, corner/gesture navigation, an opt-in browser TTS button, chapter games embedded into spreads, and a celebration ending. This remains a prototype and needs browser/device testing, visual refinement, and a formal chapter API.
+- **Do not make independent incompatible changes to `Book.jsx` or `App.jsx`.** The integration lead owns this shared demo and should finalize the chapter/full-spread game contract with the team.
 - Navigation must remain freely available during games; gameplay clicks/touches/drags must not accidentally trigger a page flip. Only explicit navigation controls or deliberate page-turn gestures should turn pages.
 - Keep chapter state and game results usable after returning to the spread during the same reading session. Do not assume component-local state survives unmounting; the integration lead will define a shared state API for chapter developers.
 
@@ -57,3 +57,13 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 ## Collaboration
 
 All teammates and their coding assistants should read **AGENTS.md** and **DESIGN_GUIDE.md**. Avoid redefining the confirmed dimensions or creating standalone sites per chapter. Merge updates from `main` into chapter branches before making changes that depend on this guide.
+
+## Demo implementation notes (2026-11-17)
+
+- The main branch includes an initial **working-code prototype**, not final approved artwork. Abstract flower shapes and emoji characters are placeholders; visual style remains deferred.
+- Existing three chapter game components were preserved unchanged; the shared app wraps each chapter's three existing scenes plus one temporary bridge scene into **four spreads per chapter**.
+- Game component instances remain mounted while the reader flips pages to retain in-session state. This is provisional until the shared state API is implemented.
+- The page-turn animation is a CSS paper-leaf prototype; realistic 3D page geometry and narrow-screen behavior need visual QA.
+- The responsive mobile game currently uses a full-width adapted interface; mobile paging, readability, and touch interactions need testing on actual devices.
+- Read-aloud uses native `speechSynthesis` when supported; voice consistency varies by device.
+- Build/run with `npm install`, `npm run dev`, `npm run build`. A dependency install and production build have not yet been verified in the execution environment.
