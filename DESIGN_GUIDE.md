@@ -1,0 +1,69 @@
+# Shared Design Guide — Lily and the Mystery of the Missing Butterflies
+
+## Status
+Confirmed team design decisions as of 2026-11-17. This document defines the page layout and game placement. Other visual and behavior choices remain open until the team approves them.
+
+## Confirmed (LOCKED)
+
+1. **Book format:** Two-page spread on desktop (left and right pages shown together).
+2. **Page aspect ratio:** Each individual page is **4:5 portrait**.
+3. **Spread aspect ratio:** Two side-by-side pages form an **8:5 landscape** spread, excluding the optional spine and outer frame.
+4. **Game placement:** **Option B — full-spread interactive games**. A game can use both left and right pages as one coherent interactive canvas, inside the existing storybook website. No navigation to another website.
+5. **Page-turn animation:** Option A — realistic paper page-flip with a visible turning sheet (not a simple fade or slide). Respect reduced-motion preferences with a non-animated fallback.
+6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress within the current reading session as specified in the session-state rule below.
+7. **Responsive design:** Option A — desktops and sufficiently wide landscape tablets show the full two-page spread; narrow/portrait mobile screens switch to a single-page reading view. Full-spread games must use a usable narrow-screen adaptation within the same site, with readable text and touch targets. No external navigation or forced landscape orientation. Breakpoints and exact game reflow are yet to be specified.
+8. **Story-page composition:** Option C — mixed layout. Each story page or spread can have its own composition (image-led, text-led, split, or integrated) rather than a mandatory illustration-left/text-right template. All variations must stay within the shared 4:5 page / 8:5 spread geometry, remain readable, and respect book spine and safe margins. This flexibility does not change the required full-spread design for mini-games.
+9. **Content safe area:** Option A — compact. Keep critical story text, primary character details, and interactive targets at least **5% of each page's width/height** from the outer edges (reference page 800×1000 → 40 horizontal and 50 vertical units). Full-bleed backgrounds and decorative illustrations may extend to all edges. Treat the center spine/gutter as a separate obstruction: do not place vital text or hit targets across it, and review spread games for spine-safe hit areas.
+10. **Chapter length:** Option B — each of the three chapters may contain **4–7 two-page spreads** (8–14 individual pages), chosen by the chapter author. Keep one continuous story across all three chapters; the number of spreads does not have to match between chapters. Covers and ending pages are outside each chapter's allowance. Each chapter must include a game spread and a transition into the next chapter, but exact pacing and content are flexible.
+11. **Game progress (Option B):** Preserve each game's partial progress when readers freely turn to another spread and then return **during the same reading session**. No account, backend, or cross-visit save is required. A page change must not reset unfinished game state. Refreshing or closing the tab may reset progress. The shared application layer should own session game state; chapter games must communicate their progress through the integration lead's agreed API once implemented. A deliberate Restart/Reset control may reset a game.
+12. **Game entry (Option C):** Interactive games are woven naturally into the story spread. **No separate Start Game button, launch screen, or external navigation.** As soon as readers reach the relevant spread, objects in the illustrated scene are interactive. Provide clear, age-appropriate visual affordances/instructions so children understand what can be tapped or clicked. Keep the interactive scene visible and support full-spread interaction, responsive narrow-screen adaptation, free navigation, and in-session progress preservation.
+13. **Game feedback (Option B):** Use **Pip's short, age-appropriate dialogue together with an animated change in the illustrated scene** to respond to children's actions. Feedback should explain *why* a choice matters, not simply say right/wrong. Examples: Pip reacts in a speech bubble and a flower blooms, leaves move, or a clue highlights. Keep feedback integrated in the current spread (no external screens or mandatory modal). Provide readable text alternatives to animation, support reduced-motion preferences, and avoid sound-only feedback. The precise animation style, timing, and visual palette remain undecided.
+14. **Read-aloud (Option B):** Narration is **opt-in only**. Provide a clearly labeled speaker/play control on story pages; children tap or click it to hear that page's written story text. **Never autoplay on page turns or website load.** Offer a stop/pause control; stop or handle narration safely when navigating away. Keep visible text on-screen and do not require audio to complete games. Use **browser-native Text-to-Speech** (Web Speech API / speechSynthesis) rather than prerecorded audio or paid generated voice files. The voice style, optional text highlighting, and exact playback controls remain to be decided. Browser/device voices may vary; if speech synthesis is unsupported, keep the text fully readable and do not block progress. Ensure accessible keyboard operation and sensible browser audio permissions.
+15. **Narration technology (Option A):** Use built-in browser **Text-to-Speech (TTS)** for the opt-in story narration, with the displayed page text as the speech source. No recorded audio assets, external voice service, paid API, user account or backend is required. Initiate speech only after user interaction; handle pause/resume/cancel and navigation safely where supported. Voice/language selection and highlighting are open decisions.
+16. **Page navigation (Option B):** Readers turn pages by **clicking/tapping a designated book corner or using a deliberate swipe/page-turn gesture**. Do **not** display persistent left/right navigation arrow buttons as the primary UI. Page turns use the confirmed realistic paper-flip animation, with an accessible reduced-motion fallback. Support both forward and backward navigation in desktop double-spread and narrow-screen single-page modes. Clearly signal interactive corners, provide keyboard-operable equivalent navigation for accessibility, and exclude game interaction zones from page-turn gesture detection so clicking, swiping, or dragging game objects never flips the page unintentionally. Navigation is always available and does not require game completion. Exact swipe thresholds/corner hitboxes remain an implementation detail.
+17. **Chapter navigation (Option A):** Story progression is **linear, page-by-page only**. Do **not** add a contents/table-of-contents page, chapter selection menu, chapter jump buttons, or global chapter navigation. Readers can move forward and backward using the confirmed book-corner or swipe gestures, including returning to earlier chapters, but cannot directly jump between chapter starts. Chapter boundaries should flow naturally within the same continuous book, with no mandatory completion gates.
+18. **Chapter transitions (Option B):** Put each chapter's title **inside the first two-page story spread of that chapter**, alongside the opening illustration and narrative. Do **not** insert a separate title-only spread or a new chapter-selection page. The first spread counts toward that chapter's 4–7 spreads. Preserve continuous story flow while identifying a new learning topic. Keep the title readable within the confirmed safe area, away from the spine; layout can vary under the approved mixed-composition rule. Chapter title wording and artwork remain authoring decisions.
+19. **Book ending (Option C):** After the story resolves the butterfly mystery, show a **dedicated celebration/completion spread** within the same book. Include a warm completion message and a playful visual reward (for example, butterflies, stars, or a garden-detective badge). This is a celebration, **not a mandatory quiz or reflection assessment**. The ending spread is **outside** the 4–7-spreads-per-chapter allocation. Do not require all chapter games to be finished to see it; the existing free-navigation rule still applies. Exact celebratory artwork, wording, and restart behavior remain open.
+20. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+
+## Reference design coordinate system (not fixed screen pixel sizes)
+
+- Single page: **800 × 1000 reference units**.
+- Full spread: **1600 × 1000 reference units** before gutter/spine.
+- Responsive scaling is required; these numbers are design coordinates, not hardcoded CSS screen sizes.
+- Critical content has a **5% page-edge safe area**: 40 units horizontally and 50 units vertically on the 800 × 1000 reference page. Background art can bleed to the edges.
+- The central book spine may obscure content; keep vital text and interaction targets clear of it (precise spine clearance remains to be determined).
+- Touch and keyboard alternatives are required for interactions.
+
+## Chapter contract for future full-spread games
+
+- Existing code exports `chapterNPages` from `src/chapters/chapterN/pages.jsx` and uses a `Content` React component for each page.
+- Existing games receive `onComplete` and call `onComplete('chapterN')`.
+- **A first shared two-page demo is now implemented in `src/components/Book.jsx` and `src/App.jsx`.** It includes responsive spreads, corner/gesture navigation, an opt-in browser TTS button, chapter games embedded into spreads, and a celebration ending. This remains a prototype and needs browser/device testing, visual refinement, and a formal chapter API.
+- **Do not make independent incompatible changes to `Book.jsx` or `App.jsx`.** The integration lead owns this shared demo and should finalize the chapter/full-spread game contract with the team.
+- Navigation must remain freely available during games; gameplay clicks/touches/drags must not accidentally trigger a page flip. Only explicit navigation controls or deliberate page-turn gestures should turn pages.
+- Keep chapter state and game results usable after returning to the spread during the same reading session. Do not assume component-local state survives unmounting; the integration lead will define a shared state API for chapter developers.
+
+## Decisions still open
+
+1. Text minimum sizes/readability standards and exact extra spine clearance (5% page-edge safe margin confirmed).
+2. Lily & Pip character bible, illustration style, color palette, typography (**visual style decision deferred**, not approved yet).
+3. Detailed storytelling beats, game spread positions, and celebration design (4–7 spreads per chapter, integrated opening titles, and separate celebration ending confirmed).
+4. Specific component API for spread games and in-session progress state (persistence behavior confirmed).
+5. Exact responsive breakpoints and narrow-screen reflow for each full-spread game.
+6. Browser TTS voice/language selection, speech pacing and optional text highlighting (browser TTS and manual tap-to-play confirmed).
+7. Exact page-corner targets, swipe gesture thresholds, keyboard navigation key mapping and discoverability hints (corner/gesture navigation confirmed).
+
+## Collaboration
+
+All teammates and their coding assistants should read **AGENTS.md** and **DESIGN_GUIDE.md**. Avoid redefining the confirmed dimensions or creating standalone sites per chapter. Merge updates from `main` into chapter branches before making changes that depend on this guide.
+
+## Demo implementation notes (2026-11-17)
+
+- The main branch includes an initial **working-code prototype**, not final approved artwork. Abstract flower shapes and emoji characters are placeholders; visual style remains deferred.
+- Existing three chapter game components were preserved unchanged; the shared app wraps each chapter's three existing scenes plus one temporary bridge scene into **four spreads per chapter**.
+- Game component instances remain mounted while the reader flips pages to retain in-session state. This is provisional until the shared state API is implemented.
+- The page-turn animation is a CSS paper-leaf prototype; realistic 3D page geometry and narrow-screen behavior need visual QA.
+- The responsive mobile game currently uses a full-width adapted interface; mobile paging, readability, and touch interactions need testing on actual devices.
+- Read-aloud uses native `speechSynthesis` when supported; voice consistency varies by device.
+- Build/run with `npm install`, `npm run dev`, `npm run build`. A dependency install and production build have not yet been verified in the execution environment.
