@@ -9,7 +9,9 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 2. **Page aspect ratio:** Each individual page is **4:5 portrait**.
 3. **Spread aspect ratio:** Two side-by-side pages form an **8:5 landscape** spread, excluding the optional spine and outer frame.
 4. **Game placement:** **Option B — full-spread interactive games**. A game can use both left and right pages as one coherent interactive canvas, inside the existing storybook website. No navigation to another website.
-5. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+5. **Page-turn animation:** Option A — realistic paper page-flip with a visible turning sheet (not a simple fade or slide). Respect reduced-motion preferences with a non-animated fallback.
+6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress when possible; the precise persistence method is still to be determined.
+7. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
 
 ## Reference design coordinate system (not fixed screen pixel sizes)
 
@@ -25,18 +27,16 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 - Existing games receive `onComplete` and call `onComplete('chapterN')`.
 - **The current shared `Book.jsx` is a single-page prototype.** It does NOT yet implement a true two-page spread or spread-level game rendering.
 - **Do not make independent incompatible changes to `Book.jsx` or `App.jsx`.** The integration lead must upgrade the shared interface first; then the team should agree on a shared `Spread` / full-spread game contract.
-- A full-spread game must preserve in-page navigation and avoid page flips while the child is clicking or dragging within the game.
+- Navigation must remain freely available during games; gameplay clicks/touches/drags must not accidentally trigger a page flip. Only explicit navigation controls or deliberate page-turn gestures should turn pages.
 - Keep chapter state and game results usable after returning to the spread; exact persistence strategy has not yet been confirmed.
 
 ## Decisions still open
 
-1. Flip mechanism: realistic paper fold vs simplified page transition.
-2. During game: whether navigation is locked, merely warned, or always allowed.
-3. On small screens: single-page mode, pan/zoom, or alternate game layout.
-4. Text / illustration layout and safe areas.
-5. Lily & Pip character bible, illustration style, color palette, typography.
-6. Number of spreads per chapter and transitions.
-7. Specific component API for spread games and progress persistence.
+1. On small screens: single-page mode, pan/zoom, or alternate game layout.
+2. Text / illustration layout and safe areas.
+3. Lily & Pip character bible, illustration style, color palette, typography.
+4. Number of spreads per chapter and transitions.
+5. Specific component API for spread games and progress persistence.
 
 ## Collaboration
 
