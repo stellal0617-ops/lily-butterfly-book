@@ -40,10 +40,35 @@ function ActiveGame({item,onComplete}){
 
 export default function Book({spreads,onComplete}){
  const bookRef=useRef(null);
+ const stageRef=useRef(null);
+ const [stageWidth,setStageWidth]=useState(0);
+ const [narrowScreen,setNarrowScreen]=useState(()=>typeof window!=='undefined' && window.matchMedia('(max-width: 680px)').matches);
  const [leafIndex,setLeafIndex]=useState(0);
  const [orientation,setOrientation]=useState('landscape');
  const [speaking,setSpeaking]=useState(false);
  const leaves=useMemo(()=>spreads.flatMap(item=>[{item,side:'left'},{item,side:'right'}]),[spreads]);
+ // A fixed-size FlipBook is deliberately sized from the available stage width:
+ // the previous "stretch" mode collapsed to a tiny portrait book in a huge frame.
+ useEffect(()=>{
+   const stage=stageRef.current;
+   if(!stage)return;
+   const measure=()=>setStageWidth(Math.round(stage.getBoundingClientRect().width));
+   measure();
+   const observer=typeof ResizeObserver!=='undefined'?new ResizeObserver(measure):null;
+   observer?.observe(stage);
+   window.addEventListener('resize',measure);
+   return()=>{observer?.disconnect();window.removeEventListener('resize',measure);};
+ },[]);
+ useEffect(()=>{
+   const media=window.matchMedia('(max-width: 680px)');
+   const sync=()=>setNarrowScreen(media.matches);
+   sync();
+   media.addEventListener?.('change',sync);
+   return()=>media.removeEventListener?.('change',sync);
+ },[]);
+ const pageWidth=Math.max(220, Math.floor(((stageWidth||1100)-(narrowScreen?12:30))/(narrowScreen?1:2)));
+ const pageHeight=Math.round(pageWidth*1.25);
+ const bookMode=narrowScreen?'mobile':'desktop';
  const spreadIndex=Math.floor(leafIndex/2);
  const active=spreads[Math.min(spreadIndex,spreads.length-1)];
  const stopSpeech=useCallback(()=>{if(typeof window!=='undefined'&&'speechSynthesis' in window)window.speechSynthesis.cancel();setSpeaking(false);},[]);
@@ -80,10 +105,9 @@ export default function Book({spreads,onComplete}){
    <div className="reader-toolbar"><span className="reader-mini-label">✿ &nbsp; STPAGEFLIP · PAPER CURL DEMO</span>
      <button className="narrate-control" type="button" onClick={speak}>{speaking?'■ Stop reading':'◖)) Read aloud'}</button>
    </div>
-   <div className="st-book-stage">
-    <HTMLFlipBook ref={bookRef}
-      width={500} height={625} size="stretch"
-      minWidth={260} maxWidth={540} minHeight={325} maxHeight={675}
+   <div className="st-book-stage" ref={stageRef} style={{height:pageHeight+20}}>
+    <HTMLFlipBook ref={bookRef} key={bookMode}
+      width={pageWidth} height={pageHeight} size="fixed"
       drawShadow={true} maxShadowOpacity={0.48} flippingTime={950}
       usePortrait={true} showCover={false} mobileScrollSupport={true}
       swipeDistance={40} clickEventForward={true} useMouseEvents={true}
