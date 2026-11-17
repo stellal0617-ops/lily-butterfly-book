@@ -1,0 +1,6 @@
+import React,{useState} from 'react';
+const actions=[{id:'water',icon:'💧',label:'Water thirsty flowers',helpful:true},{id:'pull',icon:'🌼',label:'Pull out healthy flowers',helpful:false},{id:'plant',icon:'🌱',label:'Plant nectar flowers',helpful:true}];
+export default function Game({onComplete}) {
+ const [feedback,setFeedback]=useState({}); const choose=(id)=>{const next={...feedback,[id]:true};setFeedback(next);if(Object.keys(next).length===3)onComplete('chapter2')};
+ return <section className="mini-game"><div className="game-label">INTERACTIVE DEMO 02 · REINFORCEMENT LEARNING</div><p>Help Pip learn: choose each action and give feedback.</p><div className="choice-grid">{actions.map(a=><button key={a.id} className={feedback[a.id]?'choice-tile found':'choice-tile'} onClick={()=>choose(a.id)}><span className="choice-icon">{a.icon}</span>{a.label}<span>{feedback[a.id]?(a.helpful?'⭐ Good choice':'↺ Try again'):'Give feedback'}</span></button>)}</div><p className="game-feedback" aria-live="polite">{Object.keys(feedback).length===3?'You explored all the actions! In real reinforcement learning, an agent improves a policy based on rewards.':'This is a simple rule-based demonstration of feedback, not a trained AI model.'}</p></section>;
+}
