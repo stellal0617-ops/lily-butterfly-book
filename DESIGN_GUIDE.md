@@ -11,7 +11,8 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 4. **Game placement:** **Option B — full-spread interactive games**. A game can use both left and right pages as one coherent interactive canvas, inside the existing storybook website. No navigation to another website.
 5. **Page-turn animation:** Option A — realistic paper page-flip with a visible turning sheet (not a simple fade or slide). Respect reduced-motion preferences with a non-animated fallback.
 6. **Game navigation:** Option C — free page navigation. Children can turn pages at any time without completing a game and without confirmation or warning dialogs. Do not gate story progression on game completion. Preserve game progress when possible; the precise persistence method is still to be determined.
-7. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+7. **Responsive design:** Option A — desktops and sufficiently wide landscape tablets show the full two-page spread; narrow/portrait mobile screens switch to a single-page reading view. Full-spread games must use a usable narrow-screen adaptation within the same site, with readable text and touch targets. No external navigation or forced landscape orientation. Breakpoints and exact game reflow are yet to be specified.
+8. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
 
 ## Reference design coordinate system (not fixed screen pixel sizes)
 
@@ -32,11 +33,11 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 
 ## Decisions still open
 
-1. On small screens: single-page mode, pan/zoom, or alternate game layout.
-2. Text / illustration layout and safe areas.
-3. Lily & Pip character bible, illustration style, color palette, typography.
-4. Number of spreads per chapter and transitions.
-5. Specific component API for spread games and progress persistence.
+1. Text / illustration layout and safe areas.
+2. Lily & Pip character bible, illustration style, color palette, typography.
+3. Number of spreads per chapter and transitions.
+4. Specific component API for spread games and progress persistence.
+5. Exact responsive breakpoints and narrow-screen reflow for each full-spread game.
 
 ## Collaboration
 
