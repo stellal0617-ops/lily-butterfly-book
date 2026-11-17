@@ -42,3 +42,61 @@
 .pip-reaction{margin-top:auto;background:#fff7e0e8;border-radius:30px;padding:7px 19px;font:12px Arial;color:#54715b}.pip-reaction span{margin-left:7px}
 @media(max-width:680px){.reader-stage{width:100%;padding:12px 12px 22px}.reader-heading{font-size:9px;letter-spacing:1.3px;margin-bottom:16px}.reader-subhead{display:none}.reader-mini-label{font-size:8px}.book-object{padding:8px;border-radius:10px}.book-object .book-viewport{height:auto;min-height:0;aspect-ratio:4/5;max-height:none}.spread{width:200%;transform:none}.book-page{width:50%}.spread-holder{overflow:hidden}.spread:has(.mobile-page-off.book-page-left){transform:translateX(-50%)}.mobile-page-off{visibility:hidden}.center-gutter{display:none}.book-corner{width:47px;height:47px;font-size:22px}.paper-turn{width:100%}.turn-next,.turn-previous{left:0}.page-cap,.page-bottom{font-size:8px}.story-copy h2{font-size:clamp(25px,7vw,40px)}.story-copy p{font-size:clamp(15px,3.7vw,20px)}.chapter-kicker{font-size:11px}.story-copy .story-subtitle{font-size:15px}.art-bloom{font-size:90px}.art-lily{font-size:90px}.art-pip{font-size:65px}.art-butterfly{font-size:65px}.cover-title h1{font-size:clamp(29px,8vw,43px)}.cover-title>p{font-size:16px}.spread-is-game{transform:none!important;width:100%}.spread-is-game .book-page{display:none}.spread-game-overlay{inset:6% 4% 5%;max-width:100%;gap:6px}.game-story-heading{padding:8px 12px}.game-story-heading h2{font-size:clamp(23px,6vw,32px)}.game-area{width:100%;max-height:74%;padding:10px 8px;border-radius:14px}.spread-game-overlay .choice-grid{gap:5px}.spread-game-overlay .choice-tile{padding:6px;min-height:85px;font-size:11px}.spread-game-overlay .choice-icon{font-size:29px}.spread-game-overlay .mini-game,.spread-game-overlay .game-feedback{font-size:12px}.pip-reaction{font-size:10px;padding:6px}.reader-bottom{font-size:9px;letter-spacing:.6px}.navigation-hint{font-size:11px}.game-ambient-copy{display:none}}
 @media(prefers-reduced-motion:reduce){.paper-turn{animation:none!important;opacity:.25}.book-corner{transition:none!important}}
+
+
+/* === Shared storybook typography: red text ===
+ * Keep the existing component class names and page layouts intact.
+ * Scoped to the active reader so legacy demo styles are unaffected.
+ * Change --storybook-text-red once to adjust the shared text color.
+ */
+.storybook-reader {
+  --storybook-text-red: #b42332;
+  color: var(--storybook-text-red);
+}
+
+.storybook-reader :is(
+  .reader-mini-label,
+  .narrate-control,
+  .page-cap,
+  .page-bottom,
+  .story-copy,
+  .story-copy h1,
+  .story-copy h2,
+  .story-copy p,
+  .story-copy em,
+  .chapter-kicker,
+  .story-copy .story-subtitle,
+  .story-copy .story-dialogue,
+  .story-copy .concept-pill,
+  .game-story-heading,
+  .game-story-heading span,
+  .game-story-heading h2,
+  .game-story-heading p,
+  .game-ambient-copy,
+  .mini-game,
+  .game-label,
+  .choice-tile,
+  .spread-game-overlay .choice-tile,
+  .game-feedback,
+  .spread-game-overlay .game-feedback,
+  .pip-reaction,
+  .cover-title h1,
+  .cover-title > p,
+  .cover-title .cover-blurb,
+  .cover-title em,
+  .ending-copy h2,
+  .reader-bottom,
+  .navigation-hint
+) {
+  color: var(--storybook-text-red);
+}
+
+/* Reader labels and footnotes live outside the book component. */
+.reader-stage :is(.reader-heading, .library-crest, .reader-subhead, .reader-footnote) {
+  color: #b42332;
+}
+
+/* Preserve visible red text for hovered, selected, and disabled choices. */
+.storybook-reader :is(.narrate-control, .choice-tile, .spread-game-overlay .choice-tile):is(:hover, :focus-visible, :disabled, .found) {
+  color: var(--storybook-text-red);
+}
