@@ -90,3 +90,8 @@
  .st-corner-prev{left:6px}.st-corner-next{right:6px}
 }
 @media(prefers-reduced-motion:reduce){.st-corner{transition:none}}
+
+/* Responsive paper sizing: the page dimensions are calculated in Book.jsx. */
+.st-book-stage{aspect-ratio:auto;min-height:0}
+.st-book-stage .st-flipbook{flex:none;max-width:none;margin:auto}
+@media(max-width:680px){.st-book-stage{aspect-ratio:auto}}
