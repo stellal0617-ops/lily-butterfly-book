@@ -1,21 +1,35 @@
-import React,{useMemo,useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Book from './components/Book.jsx';
 import {chapter1Pages} from './chapters/chapter1/pages.jsx';
 import {chapter2Pages} from './chapters/chapter2/pages.jsx';
 import {chapter3Pages} from './chapters/chapter3/pages.jsx';
-const cover={id:'cover',theme:'cover',chapterLabel:'THE LITTLE GARDEN LIBRARY',illustration:'🦋',title:'Lily and the Mystery of the Missing Butterflies',subtitle:'An interactive AI literacy adventure for curious young detectives',Content:()=> <><p className="cover-lead">A quiet garden. A curious robot. One big question:</p><p className="cover-question">Where did all the butterflies go?</p><div className="cover-credits">3 chapters · 3 mini-games · 1 growing garden</div></>};
-const ending={id:'ending',theme:'ending',chapterLabel:'THE SCIENCE FAIR · THE END',illustration:'🌺',title:'The garden grows again',subtitle:'Every good detective keeps learning.',Content:()=> <><p>Lily and Pip learned that examples, feedback and different perspectives can help us make better decisions.</p><p>Now the garden is ready for the science fair!</p><p className="concept-pill">THINK ABOUT IT · How would you check an AI answer?</p></>};
+
+const cover={id:'cover',theme:'cover',kind:'cover',chapterLabel:'THE LITTLE GARDEN LIBRARY',title:'Lily and the Mystery of the Missing Butterflies',subtitle:'An interactive adventure about curiosity, gardens & AI',illustration:'🦋'};
+const ending={id:'celebration',theme:'ending',kind:'ending',chapterLabel:'THE END · OUR GARDEN ADVENTURE',title:'You Did It!',subtitle:'Lily and Pip solved the garden mystery together.',illustration:'🦋'};
+const chapters=[
+ {id:'chapter1',number:'01',name:'The Butterfly Detective',short:'Learning from examples',pages:chapter1Pages,bridge:'Lily and Pip wrote down what they noticed. One picture was never enough to tell the whole story. They would need more clues from the real garden.',next:'Then Lily noticed something else: fewer flowers were blooming this year.',emoji:'🦋'},
+ {id:'chapter2',number:'02',name:'Teaching Pip to Learn',short:'Learning from feedback',pages:chapter2Pages,bridge:'Pip tried again, using Lily’s feedback to choose ways to help the flowers. Slowly, the garden began to change. But Pip kept recommending the same plant.',next:'“What about all the other flowers?” Lily wondered.',emoji:'🌱'},
+ {id:'chapter3',number:'03',name:'A Garden for Everyone',short:'Checking for bias and fairness',pages:chapter3Pages,bridge:'Lily and Pip looked again at the whole garden. They checked their examples, tested helpful actions, and made room for different flowers. The garden was ready for butterflies to visit!',next:'Together, they shared their discoveries at the school science fair.',emoji:'🌼'}
+];
+function makeSpreads(){
+ const result=[cover];
+ chapters.forEach(ch=>{
+  // Four spreads per chapter for this demo. Existing chapter components are unchanged.
+  ch.pages.forEach((page,index)=>result.push({...page,kind:page.id.endsWith('-game')?'game':'story',chapterId:ch.id,chapterNumber:ch.number,chapterName:ch.name,chapterShort:ch.short,isChapterOpening:index===0,spreadKey:page.id}));
+  result.push({id:`${ch.id}-bridge`,kind:'bridge',theme:'garden',chapterId:ch.id,chapterLabel:ch.pages[0].chapterLabel,chapterNumber:ch.number,chapterName:ch.name,title:'One clue leads to another',subtitle:ch.next,illustration:ch.emoji,bridge:ch.bridge});
+ });
+ result.push(ending);
+ return result;
+}
 export default function App(){
- const [pageIndex,setPageIndex]=useState(0);
+ const spreads=useMemo(makeSpreads,[]);
  const [completedGames,setCompletedGames]=useState([]);
- const pages=useMemo(()=>[cover,...chapter1Pages,...chapter2Pages,...chapter3Pages,ending],[]);
  const onComplete=id=>setCompletedGames(prev=>prev.includes(id)?prev:[...prev,id]);
- const jump=id=>setPageIndex(pages.findIndex(p=>p.id===id));
  return <div className="site">
- <header className="site-header"><div className="brand-mark">✿</div><div><strong>THE LITTLE GARDEN LIBRARY</strong><small>Interactive storybook prototype</small></div><div className="header-tag">For grades 2–3 ✦ Made to explore</div></header>
- <div className="site-content"><div className="hero-caption"><div className="eyebrow">A STORY ABOUT AI, CURIOSITY & NATURE</div><h1>Turn the page. <em>Grow an idea.</em></h1><p>Explore Lily and Pip's butterfly mystery, with mini-games inside the book.</p></div>
- <Book pages={pages} current={pageIndex} setCurrent={setPageIndex} completedGames={completedGames} onComplete={onComplete}/>
- <nav className="chapter-links" aria-label="Jump to chapter"><span>JUMP TO A CHAPTER</span><button onClick={()=>jump('ch1-intro')}>01 · Machine Learning</button><button onClick={()=>jump('ch2-intro')}>02 · Feedback</button><button onClick={()=>jump('ch3-intro')}>03 · Fairness</button><button onClick={()=>setPageIndex(0)}>↺ Start over</button></nav></div>
- <footer className="site-footer">A shared foundation for three creative chapter teams • Prototype, not a trained AI model</footer>
+   <main className="reader-stage">
+     <header className="reader-heading"><span className="library-crest">✳</span><span>THE LITTLE GARDEN LIBRARY</span><span className="reader-subhead">A story about curiosity, butterflies & AI</span></header>
+     <Book spreads={spreads} completedGames={completedGames} onComplete={onComplete}/>
+     <p className="reader-footnote">An interactive storybook demo for Grades 2–3 · The AI learning games are rule-based demonstrations.</p>
+   </main>
  </div>;
 }
