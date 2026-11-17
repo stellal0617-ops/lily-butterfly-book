@@ -14,7 +14,8 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 7. **Responsive design:** Option A — desktops and sufficiently wide landscape tablets show the full two-page spread; narrow/portrait mobile screens switch to a single-page reading view. Full-spread games must use a usable narrow-screen adaptation within the same site, with readable text and touch targets. No external navigation or forced landscape orientation. Breakpoints and exact game reflow are yet to be specified.
 8. **Story-page composition:** Option C — mixed layout. Each story page or spread can have its own composition (image-led, text-led, split, or integrated) rather than a mandatory illustration-left/text-right template. All variations must stay within the shared 4:5 page / 8:5 spread geometry, remain readable, and respect book spine and safe margins. This flexibility does not change the required full-spread design for mini-games.
 9. **Content safe area:** Option A — compact. Keep critical story text, primary character details, and interactive targets at least **5% of each page's width/height** from the outer edges (reference page 800×1000 → 40 horizontal and 50 vertical units). Full-bleed backgrounds and decorative illustrations may extend to all edges. Treat the center spine/gutter as a separate obstruction: do not place vital text or hit targets across it, and review spread games for spine-safe hit areas.
-10. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
+10. **Chapter length:** Option B — each of the three chapters may contain **4–7 two-page spreads** (8–14 individual pages), chosen by the chapter author. Keep one continuous story across all three chapters; the number of spreads does not have to match between chapters. Covers and ending pages are outside each chapter's allowance. Each chapter must include a game spread and a transition into the next chapter, but exact pacing and content are flexible.
+11. **Shared implementation ownership:** The integration lead maintains the global book, spread rendering, page-flip behavior, and responsive layout. Chapter developers work inside their own `src/chapters/chapterN/` folders.
 
 ## Reference design coordinate system (not fixed screen pixel sizes)
 
@@ -37,8 +38,8 @@ Confirmed team design decisions as of 2026-11-17. This document defines the page
 ## Decisions still open
 
 1. Text minimum sizes/readability standards and exact extra spine clearance (5% page-edge safe margin confirmed).
-2. Lily & Pip character bible, illustration style, color palette, typography.
-3. Number of spreads per chapter and transitions.
+2. Lily & Pip character bible, illustration style, color palette, typography (**visual style decision deferred**, not approved yet).
+3. Detailed storytelling beats, game spread positions, and chapter-to-chapter transitions (4–7 spreads per chapter confirmed).
 4. Specific component API for spread games and progress persistence.
 5. Exact responsive breakpoints and narrow-screen reflow for each full-spread game.
 
