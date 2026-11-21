@@ -1,0 +1,35 @@
+/* Scoped Chapter 3 game; covers BOTH book pages without editing shared components. */
+.spread:has(.ch3-garden-game) .spread-game-overlay{inset:0;display:block;pointer-events:none}
+.spread:has(.ch3-garden-game) .game-story-heading,.spread:has(.ch3-garden-game) .pip-reaction{display:none}
+.spread:has(.ch3-garden-game) .game-area{position:absolute;inset:0;width:100%;max-width:none;max-height:none;height:100%;padding:0;border:0;border-radius:0;box-shadow:none;overflow:visible;background:transparent;pointer-events:auto}
+.ch3-garden-game{width:100%!important;height:100%;margin:0;position:relative;font-family:'Trebuchet MS',Arial,sans-serif;color:#28564d!important;touch-action:manipulation}
+.ch3-scene{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#96eaf2,#b4e8c4 68%,#9ccf66)}
+.ch3-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none}
+.ch3-layer{position:absolute;object-fit:contain;pointer-events:none;user-select:none;transition:opacity .6s ease,transform .6s ease;filter:drop-shadow(1px 4px 4px #34634c40)}
+.ch3-pond{left:62%;top:48%;width:24%;height:27%}
+.ch3-pretty{left:31%;top:37%;width:31%;height:36%}
+.ch3-nectar{left:57%;top:29%;width:26%;height:31%}
+.ch3-milkweed{left:73%;top:42%;width:17%;height:25%;opacity:0;transform:translateY(14%) scale(.7)}
+.ch3-milkweed.is-visible{opacity:1;transform:translateY(0) scale(1)}
+.ch3-butterfly{left:69%;top:12%;width:11%;height:19%;animation:ch3-float 5s ease-in-out infinite}
+.ch3-caterpillar{left:80%;top:65%;width:14%;height:20%}
+.ch3-lily{left:8%;top:42%;width:17%;height:43%}
+.ch3-pip{left:23%;top:58%;width:13%;height:27%}
+.ch3-scene[data-design='pretty'] .ch3-pretty{transform:scale(1.22)}
+.ch3-scene[data-design='budget'] .ch3-pretty,.ch3-scene[data-design='budget'] .ch3-nectar{opacity:.36;transform:scale(.73)}
+.ch3-scene[data-design='butterflies'] .ch3-nectar{transform:scale(1.18)}
+.ch3-title{position:absolute;top:4%;left:36%;right:16%;font:700 clamp(16px,2.3vw,34px)/1.1 Georgia,serif;color:#1c7669;background:#fff9e2e0;padding:1% 2%;border-radius:999px;text-align:center}
+.ch3-dialogue{position:absolute;left:5%;top:7%;width:29%;min-height:19%;background:#fffdf1f0;border:3px solid #a1dac1;border-radius:23px;padding:1.4% 2%;box-shadow:0 4px 11px #28544822;display:flex;align-items:center;gap:8px;text-align:left;font:700 clamp(10px,1.35vw,19px)/1.35 'Trebuchet MS',Arial,sans-serif;color:#28564d}
+.ch3-speak{margin-left:auto;flex-shrink:0;background:#e4f4df;border:1px solid #71a98a;border-radius:50%;font-size:11px;width:30px;height:30px;color:#286453}
+.ch3-controls{position:absolute;left:37%;right:16%;bottom:5%;display:flex;justify-content:center;pointer-events:none}
+.ch3-panel{pointer-events:auto;display:flex;align-items:center;flex-direction:column;gap:6px;max-width:100%;padding:10px 15px;background:#fff8e8f2;border:3px solid #98cdae;border-radius:23px;color:#28564d;text-align:center;box-shadow:0 7px 20px #47674337;font:clamp(10px,1.2vw,16px)/1.2 'Trebuchet MS',Arial,sans-serif}
+.ch3-panel strong{font:700 clamp(12px,1.55vw,20px)/1.2 Georgia,serif}.ch3-panel span{font-size:clamp(10px,1vw,14px)}
+.ch3-choice-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.ch3-choice-row button{padding:5px 9px;min-width:90px;display:flex;align-items:center;gap:5px;border-radius:13px;border:2px solid #9cc9ae;background:#fffefa;color:#397362;font:700 clamp(10px,1.05vw,15px)/1.25 'Trebuchet MS',Arial,sans-serif}
+.ch3-choice-row button.active{background:#d2efce;border-color:#3c986b;box-shadow:0 0 0 2px #fff}.ch3-choice-row button b{font-size:20px;color:#dc8172}
+.ch3-next{padding:7px 15px;border:0;border-radius:30px;background:#317e67;color:white;font:700 clamp(11px,1.1vw,16px) 'Trebuchet MS',Arial,sans-serif}
+.ch3-hotspot{position:absolute;z-index:4;width:4.2%;aspect-ratio:1;border:3px solid white;background:#8bcf86d9;box-shadow:0 0 0 4px #d8f6cb80;border-radius:50%;font:700 clamp(13px,1.8vw,24px) Arial;color:#fff;animation:ch3-pulse 2.1s ease-in-out infinite;display:grid;place-items:center;padding:0}
+.ch3-hotspot-flower{top:45%;left:49%}.ch3-hotspot-butterfly{top:19%;left:74%}.ch3-hotspot-caterpillar{top:70%;left:86%}.ch3-hotspot-milkweed{top:48%;left:81%}
+@keyframes ch3-pulse{50%{box-shadow:0 0 0 9px #d8f6cb50;transform:scale(1.08)}}@keyframes ch3-float{50%{transform:translateY(-9px) rotate(4deg)}}
+@media(max-width:680px){.spread:has(.ch3-garden-game) .spread-game-overlay{inset:0;max-width:100%}.spread:has(.ch3-garden-game) .game-area{width:100%;height:100%;max-height:none;padding:0}.ch3-bg{object-position:center}.ch3-lily{left:3%;top:48%;width:26%;height:32%}.ch3-pip{left:22%;top:60%;width:22%;height:20%}.ch3-title{left:31%;right:5%;top:4%;font-size:clamp(13px,4vw,22px)}.ch3-dialogue{left:4%;top:13%;width:91%;min-height:13%;font-size:clamp(11px,3vw,15px);padding:8px 12px}.ch3-controls{left:4%;right:4%;bottom:8%}.ch3-panel{width:100%;max-width:none;padding:7px;gap:5px}.ch3-choice-row{gap:4px}.ch3-choice-row button{min-width:0;padding:5px;font-size:10px}.ch3-choice-row button b{font-size:15px}.ch3-hotspot{width:10%;font-size:16px}.ch3-hotspot-flower{top:46%;left:53%}.ch3-hotspot-butterfly{top:35%;left:76%}.ch3-hotspot-caterpillar{top:68%;left:86%}.ch3-hotspot-milkweed{top:50%;left:83%}.ch3-pretty{top:43%}.ch3-nectar{top:39%}.ch3-butterfly{top:28%}}
+@media(prefers-reduced-motion:reduce){.ch3-layer,.ch3-hotspot{animation:none!important;transition:none!important}}
