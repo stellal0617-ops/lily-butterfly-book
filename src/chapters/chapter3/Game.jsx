@@ -94,7 +94,7 @@ function GoalOptions({selected,multiple,onChoose}) {
 function ReadingOverlay({message,onContinue,artAdded}) {
   return <div className="ch3-reading-layer">
     <div className="ch3-reading-panel" role="dialog" aria-modal="true" aria-label={message.title}>
-      <span className="ch3-reading-kicker">LOOK · THINK · LEARN</span>
+      {!message.celebration&&<span className="ch3-reading-kicker">LOOK · THINK · LEARN</span>}
       <h4>{message.title}</h4>
       {message.lines.map((line,i)=><p className="ch3-reading-line" key={i}>
         {line.speaker&&<strong>{line.speaker}: </strong>}{line.text}
@@ -137,10 +137,11 @@ function stageMessage(phase) {
       {speaker:'Lily',text:"Before we finish, let's check the garden again!"},
       {speaker:'Pip',text:'A suggestion is only the beginning. Help me look for what I missed!'}
     ],note:'Check the adult butterfly AND the monarch caterpillar.',button:'Check the animals'};
-    case 'celebrate':return {title:'A Garden for Everyone!',lines:[
-      {speaker:'Lily',text:'We made a better garden by asking questions and checking the results!'},
-      {speaker:'Pip',text:'Thank you! You helped me notice what I missed.'}
-    ],note:'GOALS matter · EXAMPLES matter · PEOPLE check the results.',button:'Play again'};
+    case 'celebrate':return {title:'Hooray! The Garden Is Blooming!',celebration:true,lines:[
+      {text:'Butterflies flutter from flower to flower.'},
+      {text:'A little caterpillar munches happily on a milkweed leaf.'},
+      {text:'The garden is bright, beautiful, and full of life!'}
+    ],button:'Play again'};
     default:return null;
   }
 }
