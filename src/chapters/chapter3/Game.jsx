@@ -1,42 +1,343 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './Game.css';
-const A='/chapter3/';
-const GOALS=[['pretty','✿','Make it pretty'],['budget','$','Save money'],['butterflies','♡','Help butterflies']];
-const NEW=()=>({step:'explore',seen:[],goal:'',pair:[],checked:[]});
-export default function Game({onComplete}){
- const [g,set]=useState(NEW),[message,msg]=useState('Pip: Look, Lily! I designed a beautiful butterfly garden!'),[talking,speaking]=useState(false);
- const food=g.step==='choose'?g.goal==='butterflies':g.step==='explore'?false:g.pair.includes('butterflies');
- const design=g.step==='explore'?'initial':g.step==='choose'?(g.goal||'initial'):food?'butterflies':g.pair.includes('pretty')?'pretty':'budget';
- useEffect(()=>()=>window.speechSynthesis?.cancel(),[]);
- const stage=(step)=>{set(s=>({...s,step,checked:[]}));msg(step==='choose'?'Pip: What should I focus on?':step==='combine'?'Lily: What if we choose TWO important goals?':step==='check'?'Lily: Tap the garden. Did we remember everyone?':'Pip: Our choices change the garden I design!')};
- const clue=(id)=>{
-   let text=id==='caterpillar'?(food?'Caterpillar: Yay! I found the milkweed I need!':'Caterpillar: I am hungry! I need milkweed leaves!'):id==='butterfly'?'Butterfly: I can drink nectar from these flowers!':id==='milkweed'?'Milkweed: Monarch caterpillars can eat my leaves!':'Flowers: We can give adult butterflies nectar!';
-   msg(text);set(s=>({...s,seen:[...new Set([...s.seen,id])],checked:[...new Set([...s.checked,id])]}));
- };
- const choose=id=>{
-   set(s=>({...s,goal:id,seen:[...new Set([...s.seen,'goal-'+id])]}));
-   msg(({pretty:'Pip: I made it more colorful! Lily: But where will caterpillars find food?',budget:'Pip: I saved money! Lily: Some butterflies still need more help.',butterflies:'Pip: I thought about butterflies and caterpillars this time!'})[id]);
- };
- const pair=id=>set(s=>{const next=s.pair.includes(id)?s.pair.filter(x=>x!==id):s.pair.length<2?[...s.pair,id]:s.pair;msg(next.length===2?(next.includes('butterflies')?'Pip: I included nectar flowers and host plants!':'Lily: This is pretty, but who did Pip forget?'):'Pip: Choose one more goal!');return {...s,pair:next}});
- const say=()=>{if(!window.speechSynthesis)return;if(talking){window.speechSynthesis.cancel();speaking(false);return}const u=new SpeechSynthesisUtterance(message);u.rate=.88;u.onend=()=>speaking(false);u.onerror=()=>speaking(false);window.speechSynthesis.speak(u);speaking(true)};
- const done=()=>{stage('finished');onComplete?.('chapter3')};
- return <section className="mini-game ch3-garden-game" aria-label="Interactive garden game" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}>
-  <div className="ch3-scene" data-design={design}>
-   <img className="ch3-bg" src={A+'garden-background.webp'} alt="" draggable="false"/>
-   {['pond','pretty-flowers','nectar-flowers','milkweed','butterfly'].map(name=><img key={name} src={A+name+'.png'} alt="" draggable="false" className={'ch3-layer ch3-'+({'pretty-flowers':'pretty','nectar-flowers':'nectar'}[name]||name)+(name==='milkweed'&&food?' is-visible':'')}/>)}
-   <img className="ch3-layer ch3-caterpillar" src={A+(food?'caterpillar-happy.png':'caterpillar-hungry.png')} alt="" draggable="false"/>
-   <img className="ch3-layer ch3-lily" src={A+'lily.png'} alt="Lily" draggable="false"/>
-   <img className="ch3-layer ch3-pip" src={A+'pip.png'} alt="Pip" draggable="false"/>
-   <div className="ch3-title">Change Pip's Goals!</div>
-   {['explore','check'].includes(g.step)&&<>{[['flowers','flower'],['butterfly','butterfly'],['caterpillar','caterpillar'],...(food?[['milkweed','milkweed']]:[])].map(([id,loc])=><button type="button" key={id} className={'ch3-hotspot ch3-hotspot-'+loc} onClick={()=>clue(id)} aria-label={'Explore '+id}>+</button>)}</>}
-   <div className="ch3-dialogue" role="status" aria-live="polite">{message}<button type="button" className="ch3-speak" onClick={say} aria-label={talking?'Stop reading':'Read dialogue aloud'}>{talking?'■':'▶'}</button></div>
-   <div className="ch3-controls"><div className="ch3-panel">
-    {g.step==='explore'&&<><strong>Tap the glowing garden clues!</strong><span>Can you find what Pip forgot?</span>{g.seen.includes('caterpillar')&&<button className="ch3-next" onClick={()=>stage('choose')}>Help Pip →</button>}</>}
-    {g.step==='choose'&&<><strong>What should Pip think about?</strong><div className="ch3-choice-row">{GOALS.map(([id,icon,label])=><button type="button" key={id} className={g.goal===id?'active':''} aria-pressed={g.goal===id} onClick={()=>choose(id)}><b>{icon}</b>{label}</button>)}</div>{g.seen.filter(x=>x.startsWith('goal-')).length>=2&&<button className="ch3-next" onClick={()=>stage('combine')}>Try two goals →</button>}</>}
-    {g.step==='combine'&&<><strong>Choose TWO important goals!</strong><div className="ch3-choice-row">{GOALS.map(([id,icon,label])=><button type="button" key={id} className={g.pair.includes(id)?'active':''} aria-pressed={g.pair.includes(id)} onClick={()=>pair(id)}><b>{icon}</b>{label}</button>)}</div><span>{g.pair.length}/2 chosen</span>{g.pair.length===2&&<button className="ch3-next" onClick={()=>stage('check')}>Check the garden →</button>}</>}
-    {g.step==='check'&&<><strong>Did we remember everyone?</strong><span>Tap the garden to investigate!</span>{food&&g.checked.includes('caterpillar')&&(g.checked.includes('flowers')||g.checked.includes('milkweed'))?<button className="ch3-next" onClick={done}>Celebrate! →</button>:<button className="ch3-next" onClick={()=>stage('combine')}>Change goals ↻</button>}</>}
-    {g.step==='finished'&&<><strong>We made a better garden!</strong><span>AI choices depend on the goals we set. Check who might be missing!</span><button className="ch3-next" onClick={()=>{set(NEW());msg('Pip: Look, Lily! I designed a beautiful butterfly garden!')}}>Play again ↻</button></>}
-   </div></div>
-  </div>
- </section>;
+
+/**
+ * Chapter 3 – Human Values & Fairness
+ * A single, full-spread garden. Lily observes from the bottom left,
+ * Pip explains from the bottom right, and the garden changes in the middle.
+ * The game uses only artwork in public/chapter3 and public/chapter3/extra.
+ */
+const BASE = '/chapter3/';
+const EXTRA = BASE + 'extra/';
+const goals = [
+  { id: 'pretty', label: 'Make it pretty', image: 'goal-pretty-button.png' },
+  { id: 'budget', label: 'Save money', image: 'goal-budget-button.png' },
+  { id: 'habitat', label: 'Help butterflies', image: 'goal-butterflies-button.png' }
+];
+const freshGame = () => ({
+  step: 'explore',
+  explored: [],
+  checked: [],
+  tried: ['pretty'],
+  selected: 'pretty',
+  pair: []
+});
+const initialLines = {
+  lily: "It's beautiful! Let's see who can live here.",
+  pip: "I picked lots of bright flowers, Lily!"
+};
+const goalLines = {
+  pretty: "I chose lots of colorful flowers.",
+  budget: "I used fewer plants to save money.",
+  habitat: "I added nectar flowers AND milkweed!"
+};
+const dualLines = {
+  'budget+pretty': "We can save money and still add some color!",
+  'habitat+pretty': "We can make it beautiful AND help caterpillars!",
+  'budget+habitat': "We can help monarchs while keeping costs down!"
+};
+const has = (items, id) => items.includes(id);
+
+function PlantImage({ name, className = '', alt = '' }) {
+  return <img className={'ch3-art ' + className} src={EXTRA + name + '.png'} alt={alt} draggable="false" loading="eager" />;
+}
+
+export default function Game({ onComplete }) {
+  const [game, setGame] = useState(freshGame);
+  const [lines, setLines] = useState(initialLines);
+  const [speaking, setSpeaking] = useState(false);
+  const step = game.step;
+  const combination = step === 'combine' || step === 'check' || step === 'finished';
+  const active = combination ? (game.pair.length ? game.pair : [game.selected]) : [game.selected];
+  const hasHabitat = has(active, 'habitat');
+  const hasPretty = has(active, 'pretty');
+  const hasBudget = has(active, 'budget');
+  const dual = active.length === 2;
+  const pairKey = [...active].sort().join('+');
+  const garden = hasHabitat ? 'habitat' : hasBudget ? 'budget' : 'pretty';
+  const canInspect = ['explore', 'choose', 'combine', 'check'].includes(step);
+  const exploredBoth = has(game.explored, 'butterfly') && has(game.explored, 'caterpillar');
+  const checkedBoth = has(game.checked, 'butterfly') && has(game.checked, 'caterpillar');
+
+  useEffect(() => () => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) window.speechSynthesis.cancel();
+  }, []);
+
+  function stopReading() {
+    if (typeof window !== 'undefined' && window.speechSynthesis) window.speechSynthesis.cancel();
+    setSpeaking(false);
+  }
+
+  function readAloud() {
+    if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+    if (speaking) { stopReading(); return; }
+    window.speechSynthesis.cancel();
+    const utterance = new window.SpeechSynthesisUtterance('Lily says: ' + lines.lily + ' Pip says: ' + lines.pip);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.86;
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    setSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function goTo(next) {
+    stopReading();
+    setGame(old => ({
+      ...old,
+      step: next,
+      checked: next === 'check' ? [] : old.checked,
+      pair: next === 'combine' ? [] : old.pair
+    }));
+    if (next === 'explain') {
+      setLines({
+        lily: "The butterfly found nectar. What about the caterpillar?",
+        pip: "Oops! I focused on pretty flowers. I forgot milkweed!"
+      });
+    } else if (next === 'choose') {
+      setLines({
+        lily: "Let's try a different goal. What changes?",
+        pip: "Your goal tells me what to focus on!"
+      });
+    } else if (next === 'combine') {
+      setLines({
+        lily: "Could two goals make a better garden?",
+        pip: "Choose TWO things that matter!"
+      });
+    } else if (next === 'check') {
+      setLines({
+        lily: "Let's check BOTH the butterfly and caterpillar!",
+        pip: dualLines[pairKey] || "I'll show you the new garden!"
+      });
+    }
+  }
+
+  function inspect(who) {
+    if (!canInspect) return;
+    const inCheck = step === 'check';
+    setGame(old => ({
+      ...old,
+      explored: step === 'explore' ? [...new Set([...old.explored, who])] : old.explored,
+      checked: inCheck ? [...new Set([...old.checked, who])] : old.checked
+    }));
+    stopReading();
+    if (who === 'butterfly') {
+      setLines({
+        lily: "The adult butterfly found nectar flowers!",
+        pip: "Adult butterflies drink nectar from flowers."
+      });
+    } else if (who === 'caterpillar') {
+      setLines(hasHabitat ? {
+        lily: "Look! The caterpillar found milkweed leaves!",
+        pip: "Milkweed helps monarch caterpillars grow."
+      } : {
+        lily: "Oh no! The caterpillar is still hungry.",
+        pip: "I forgot milkweed. Monarch caterpillars need its leaves!"
+      });
+    } else if (who === 'flowers') {
+      setLines({
+        lily: "These flowers are pretty. Do they help everyone?",
+        pip: "Nectar feeds adults, but monarch babies need milkweed."
+      });
+    } else {
+      setLines({
+        lily: "That's milkweed! Look at its big green leaves.",
+        pip: "Monarch caterpillars can eat those leaves."
+      });
+    }
+  }
+
+  function chooseGoal(id) {
+    stopReading();
+    setGame(old => ({
+      ...old,
+      selected: id,
+      tried: [...new Set([...old.tried, id])]
+    }));
+    setLines({
+      lily: id === 'habitat' ? "Now look! Who has food in this garden?" :
+        id === 'budget' ? "It costs less. Did we remember the caterpillar?" :
+          "Such lovely colors! Who might be missing?",
+      pip: goalLines[id]
+    });
+  }
+
+  function toggleGoal(id) {
+    stopReading();
+    const next = has(game.pair, id)
+      ? game.pair.filter(item => item !== id)
+      : game.pair.length < 2 ? [...game.pair, id] : [game.pair[1], id];
+    setGame(old => ({ ...old, pair: next }));
+    const key = [...next].sort().join('+');
+    setLines({
+      lily: next.length < 2 ? "Choose one more goal for Pip!" :
+        next.includes('habitat') ? "Great! Now let's check the animals." :
+          "It looks good. But did we forget anyone?",
+      pip: next.length === 2 ? dualLines[key] : next.length ? goalLines[next[0]] : "Pick two important goals!"
+    });
+  }
+
+  function finish() {
+    stopReading();
+    setGame(old => ({ ...old, step: 'finished' }));
+    setLines({
+      lily: "We checked the garden and helped everyone!",
+      pip: "AI needs people to check its choices and what it missed!"
+    });
+    if (onComplete) onComplete('chapter3');
+  }
+
+  function restart() {
+    stopReading();
+    setGame(freshGame());
+    setLines(initialLines);
+  }
+
+  function GoalChoices({ multiple = false }) {
+    return <div className="ch3-goal-choices" role="group" aria-label={multiple ? 'Choose two garden goals' : 'Choose a garden goal'}>
+      {goals.map(goal => {
+        const chosen = multiple ? has(game.pair, goal.id) : game.selected === goal.id;
+        return <button key={goal.id} type="button"
+          className={'ch3-goal-card' + (chosen ? ' is-selected' : '')}
+          onClick={() => multiple ? toggleGoal(goal.id) : chooseGoal(goal.id)}
+          aria-pressed={chosen} aria-label={goal.label}
+          title={goal.label}>
+          <PlantImage name={goal.image} />
+          <span className="ch3-sr-only">{goal.label}</span>
+        </button>;
+      })}
+    </div>;
+  }
+
+  return <section className="mini-game ch3-garden-game"
+    aria-label="Chapter 3: Who did Pip think about?"
+    onPointerDown={event => event.stopPropagation()}
+    onPointerUp={event => event.stopPropagation()}>
+    <div className="ch3-stage" data-step={step} data-garden={garden}
+      data-dual={dual ? pairKey : 'none'} data-milkweed={hasHabitat ? 'yes' : 'no'}>
+      <img className="ch3-background" src={BASE + 'garden-background.webp'} alt="" draggable="false" />
+
+      {/* The scenery frames ONE interactive garden across both pages. */}
+      <PlantImage name="trellis" className="ch3-trellis" />
+      <PlantImage name="stone-pond" className="ch3-pond" />
+      <PlantImage name="garden-bench" className="ch3-bench" />
+      <PlantImage name="garden-sign" className="ch3-wood-sign" />
+      <PlantImage name="stepping-stones" className="ch3-stones" />
+      <PlantImage name="water-can" className="ch3-watering-can" />
+      <PlantImage name="pink-flower-bed" className="ch3-border-flowers ch3-border-flowers-left" />
+      <PlantImage name="mixed-flower-bed" className="ch3-border-flowers ch3-border-flowers-right" />
+      <PlantImage name="garden-pretty-bed" className="ch3-main-bed ch3-bed-pretty" />
+      <PlantImage name="garden-budget-bed" className="ch3-main-bed ch3-bed-budget" />
+      <PlantImage name="garden-habitat-bed" className="ch3-main-bed ch3-bed-habitat" />
+      <PlantImage name="pink-flower-bed" className="ch3-goal-accent ch3-goal-accent-pretty" />
+      <PlantImage name="raised-flower-bed" className="ch3-goal-accent ch3-goal-accent-budget" />
+      <PlantImage name="milkweed-bed-sign" className="ch3-plant-sign ch3-milkweed-sign" />
+      <PlantImage name="nectar-bed-sign" className="ch3-plant-sign ch3-nectar-sign" />
+
+      <div className="ch3-heading">
+        <span className="ch3-eyebrow">CHAPTER 3 · THE GARDEN EXPERIMENT</span>
+        <h3>{step === 'explore' ? 'Who Can Live Here?' :
+          step === 'explain' ? 'What Did Pip Forget?' :
+            step === 'choose' ? "Change Pip's Goals!" :
+              step === 'combine' ? 'Two Goals, One Garden!' :
+                step === 'check' ? 'Check the New Garden!' : 'A Garden for Everyone!'}</h3>
+        <p>{step === 'explore' ? 'Tap the butterfly and the caterpillar.' :
+          step === 'explain' ? 'AI follows the priorities we give it.' :
+            step === 'choose' ? 'Try different goals and watch the garden change.' :
+              step === 'combine' ? 'Choose two priorities to guide Pip.' :
+                step === 'check' ? 'Did Pip remember what both animals need?' :
+                  'We can improve AI ideas by checking what was missed.'}</p>
+      </div>
+
+      {/* Inspectable garden visitors: their reactions change when the goals change. */}
+      <button type="button" className="ch3-visitor ch3-visitor-butterfly"
+        onClick={() => inspect('butterfly')} disabled={!canInspect}
+        aria-label="Inspect adult monarch butterfly">
+        <PlantImage name="butterfly-adult" />
+        {canInspect && <span className="ch3-tap-spark" aria-hidden="true">✦</span>}
+      </button>
+      <button type="button" className="ch3-visitor ch3-visitor-caterpillar"
+        onClick={() => inspect('caterpillar')} disabled={!canInspect}
+        aria-label="Inspect monarch caterpillar">
+        <PlantImage name={hasHabitat ? 'caterpillar-fed' : 'caterpillar-looking'} />
+        {canInspect && <span className="ch3-tap-spark" aria-hidden="true">✦</span>}
+      </button>
+      {canInspect && <button type="button" className="ch3-clue ch3-clue-flower"
+        aria-label="Inspect the flowers" title="Look at the flowers"
+        onClick={() => inspect('flowers')}>✦</button>}
+      {canInspect && hasHabitat && <button type="button" className="ch3-clue ch3-clue-milkweed"
+        aria-label="Inspect milkweed" title="Look at the milkweed"
+        onClick={() => inspect('milkweed')}>✦</button>}
+
+      {/* Character anchors never swap sides. Their dialogue lives above them. */}
+      <img className="ch3-character ch3-character-lily" src={BASE + 'lily.png'} alt="Lily, observing from the left" draggable="false" />
+      <img className="ch3-character ch3-character-pip" src={BASE + 'pip.png'} alt="Pip, the AI robot, on the right" draggable="false" />
+      <div className="ch3-speech ch3-speech-lily">
+        <PlantImage name="bubble-lily" />
+        <span>{lines.lily}</span>
+      </div>
+      <div className="ch3-speech ch3-speech-pip" role="status" aria-live="polite">
+        <PlantImage name="bubble-pip" />
+        <span>{lines.pip}</span>
+      </div>
+
+      <button type="button" className="ch3-read-aloud" onClick={readAloud}
+        aria-label={speaking ? 'Stop reading aloud' : 'Read Lily and Pip dialogue aloud'}
+        title={speaking ? 'Stop reading' : 'Read dialogue aloud'}>
+        {speaking ? '■' : '♫'} <span>{speaking ? 'Stop' : 'Listen'}</span>
+      </button>
+
+      <div className="ch3-control-dock" aria-label="Garden game controls">
+        {step === 'explore' && <div className="ch3-control-content">
+          <strong>Garden detective</strong>
+          <span className="ch3-dock-hint">{game.explored.length}/2 visitors checked · Find the butterfly and caterpillar</span>
+          <button type="button" className="ch3-primary" disabled={!exploredBoth}
+            onClick={() => goTo('explain')}>What did Pip miss? <span aria-hidden="true">→</span></button>
+        </div>}
+
+        {step === 'explain' && <div className="ch3-control-content">
+          <strong>One goal can leave someone out!</strong>
+          <span className="ch3-dock-hint">Adult butterflies drink nectar. Monarch caterpillars need milkweed leaves.</span>
+          <button type="button" className="ch3-primary" onClick={() => goTo('choose')}>Help Pip choose again <span aria-hidden="true">→</span></button>
+        </div>}
+
+        {step === 'choose' && <div className="ch3-control-content">
+          <strong>What should Pip focus on?</strong>
+          <GoalChoices />
+          <div className="ch3-dock-actions">
+            <span className="ch3-dock-hint">Explore at least two goals · {game.tried.length}/3 tried</span>
+            <button type="button" className="ch3-primary" disabled={game.tried.length < 2}
+              onClick={() => goTo('combine')}>Try two goals <span aria-hidden="true">→</span></button>
+          </div>
+        </div>}
+
+        {step === 'combine' && <div className="ch3-control-content">
+          <strong>What TWO things matter most?</strong>
+          <GoalChoices multiple />
+          <div className="ch3-dock-actions">
+            <span className="ch3-dock-hint">{game.pair.length}/2 selected</span>
+            <button type="button" className="ch3-primary" disabled={game.pair.length !== 2}
+              onClick={() => goTo('check')}>Check our garden <span aria-hidden="true">→</span></button>
+          </div>
+        </div>}
+
+        {step === 'check' && <div className="ch3-control-content">
+          <strong>Who did Pip remember?</strong>
+          <span className="ch3-dock-hint">Tap BOTH visitors to check · {game.checked.length}/2 checked</span>
+          <div className="ch3-dock-actions">
+            <button type="button" className="ch3-secondary" onClick={() => goTo('combine')}>↶ Change goals</button>
+            {hasHabitat && checkedBoth && <button type="button" className="ch3-primary"
+              onClick={finish}>Celebrate! <span aria-hidden="true">✦</span></button>}
+            {!hasHabitat && checkedBoth && <span className="ch3-dock-hint ch3-try-again">Milkweed is missing. Try a habitat goal!</span>}
+          </div>
+        </div>}
+
+        {step === 'finished' && <div className="ch3-control-content ch3-celebrate">
+          <strong>✦ We made a better garden! ✦</strong>
+          <span className="ch3-dock-hint">People set AI goals, and people check whose needs were missed.</span>
+          <button type="button" className="ch3-primary" onClick={restart}>Play again ↶</button>
+        </div>}
+      </div>
+    </div>
+  </section>;
 }
