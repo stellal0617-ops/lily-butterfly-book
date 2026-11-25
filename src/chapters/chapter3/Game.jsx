@@ -229,7 +229,7 @@ export default function Game({onComplete}) {
     setG(old=>({...old,goal:id,tried:[...new Set([...old.tried,id])]}));
     showFeedback({title:GOALS.find(item=>item.id===id).label+' Garden',lines:[
       {speaker:'Pip',text:GOAL_EXPLANATIONS[id]},
-      {speaker:'Lily',text:id==='habitat'?'Now let's check that both monarch life stages have food.':'Looks different! Could another important need be missing?'}
+      {speaker:'Lily',text:id==='habitat'?"Now let's check that both monarch life stages have food.":'Looks different! Could another important need be missing?'}
     ],button:'Keep experimenting'});
   }
   function togglePair(id){
