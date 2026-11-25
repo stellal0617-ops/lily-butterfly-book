@@ -39,7 +39,7 @@ const dualLines = {
 const has = (items, id) => items.includes(id);
 
 function PlantImage({ name, className = '', alt = '' }) {
-  return <img className={'ch3-art ' + className} src={EXTRA + name + '.png'} alt={alt} draggable="false" loading="eager" />;
+  return <img className={'ch3-art ' + className} src={EXTRA + (name.endsWith('.png') ? name : name + '.png')} alt={alt} draggable="false" loading="eager" />;
 }
 
 export default function Game({ onComplete }) {
@@ -253,13 +253,13 @@ export default function Game({ onComplete }) {
       <button type="button" className="ch3-visitor ch3-visitor-butterfly"
         onClick={() => inspect('butterfly')} disabled={!canInspect}
         aria-label="Inspect adult monarch butterfly">
-        <PlantImage name="butterfly-adult" />
+        <img className="ch3-art" src={BASE + "butterfly.png"} alt="" draggable="false" loading="eager" />
         {canInspect && <span className="ch3-tap-spark" aria-hidden="true">✦</span>}
       </button>
       <button type="button" className="ch3-visitor ch3-visitor-caterpillar"
         onClick={() => inspect('caterpillar')} disabled={!canInspect}
         aria-label="Inspect monarch caterpillar">
-        <PlantImage name={hasHabitat ? 'caterpillar-fed' : 'caterpillar-looking'} />
+        <img className="ch3-art" src={BASE + (hasHabitat ? "caterpillar-happy.png" : "caterpillar-hungry.png")} alt="" draggable="false" loading="eager" />
         {canInspect && <span className="ch3-tap-spark" aria-hidden="true">✦</span>}
       </button>
       {canInspect && <button type="button" className="ch3-clue ch3-clue-flower"
