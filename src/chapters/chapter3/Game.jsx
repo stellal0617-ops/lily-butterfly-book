@@ -113,13 +113,13 @@ function stageMessage(phase) {
       {speaker:'Lily',text:"It looks lovely. Let's see who can live here!"}
     ],note:'First, explore the garden. Find both visitors.',button:'Explore the garden'};
     case 'explain':return {title:'Why Did Pip Forget?',lines:[
-      {text:'Pip was trying to make a beautiful garden, so it chose lots of colorful flowers. But it forgot to add milkweed, which monarch caterpillars need for food.'},
-      {text:'This shows how the goals people give AI can shape its suggestions—and what it might miss.'}
-    ],note:'Think about the goal Lily gave Pip.',button:'Why did Pip choose the flowers?'};
+      {text:'Pip wanted to make a really pretty garden. It picked lots of bright, colorful flowers!'},
+      {text:'But oh no! Pip forgot the milkweed. Now the hungry caterpillar has nothing to eat!'}
+    ],button:'Why these flowers?'};
     case 'bias-intro':return {title:'What Examples Did Pip See?',lines:[
-      {speaker:'Pip',text:'I looked at examples of butterfly gardens!'},
-      {speaker:'Lily',text:"Let's look closely. Do the examples show the whole story?"}
-    ],note:'In Chapter 1, we learned that AI learns from examples. Which examples are missing?',button:"See Pip's pictures"};
+      {text:'Pip found three pictures of butterfly gardens.'},
+      {text:"Let's take a peek!"}
+    ],button:"Show me the pictures!"};
     case 'goals':return {title:"Change Pip's Goals!",lines:[
       {speaker:'Lily',text:"Let's see what happens when we change the goal!"},
       {speaker:'Pip',text:'I make different suggestions when you tell me what matters.'}
