@@ -23,9 +23,14 @@ const EXAMPLES=[
  author:'Aaron Burden'}
 ];
 const SHORT_GOAL_LINES={
-pretty:'I chose colorful flowers for beauty!',
-budget:'I used fewer plants to save money.',
-habitat:'I added nectar flowers and milkweed!'
+  pretty:'I chose lots of colorful flowers to make the garden pretty!',
+  budget:'I used fewer plants so the garden would cost less!',
+  habitat:'I planted nectar flowers for butterflies and milkweed for caterpillars!'
+};
+const GOAL_LILY_LINES={
+  pretty:"Wow, it's beautiful! But where's the milkweed for the caterpillars?",
+  budget:'We saved money! But there are so few flowers. Will the butterflies have enough nectar?',
+  habitat:'The butterflies have food now! But the garden looks a little messy, Pip. And what about our budget?'
 };
 const SHORT_DUAL_LINES={
 'budget+pretty':'Colorful flowers on a small budget!',
@@ -44,9 +49,9 @@ check:{lily:'Did we remember everyone?',pip:'Check both monarch life stages!'},
 celebrate:{lily:'We checked and improved the garden!',pip:'People help me improve!'}
 };
 const GOAL_EXPLANATIONS={
-  pretty:'I focused on colorful flowers and decorations. I still need to check for milkweed.',
-  budget:'I focused on using fewer, affordable plants. A small budget does not mean we should forget caterpillars.',
-  habitat:'I included nectar flowers for adults and milkweed leaves for monarch caterpillars.'
+  pretty:SHORT_GOAL_LINES.pretty,
+  budget:SHORT_GOAL_LINES.budget,
+  habitat:SHORT_GOAL_LINES.habitat
 };
 const DUAL_EXPLANATIONS={
   'budget+pretty':'I made a colorful garden with fewer plants. Let us check whether the monarchs have everything they need.',
@@ -178,7 +183,7 @@ export default function Game({onComplete}) {
       'A Missing Example!':{lily:'Yes! Add a caterpillar and milkweed!',pip:'My examples missed young monarchs!'}
     };
     const inline=selectedGoal?{
-      lily:selectedGoal.id==='habitat'?'Now the caterpillar has food!':selectedGoal.id==='budget'?'Less expensive! What is missing?':'Beautiful! What might be missing?',
+      lily:GOAL_LILY_LINES[selectedGoal.id],
       pip:SHORT_GOAL_LINES[selectedGoal.id]
     }:byTitle[title]||{lily:'Let us check that idea.',pip:'Good thinking!'};
     setG(old=>({...old,mode:'interact',feedback:message,inline}));
@@ -255,7 +260,7 @@ export default function Game({onComplete}) {
     setG(old=>({...old,goal:id,tried:[...new Set([...old.tried,id])]}));
     showFeedback({title:GOALS.find(item=>item.id===id).label+' Garden',lines:[
       {speaker:'Pip',text:GOAL_EXPLANATIONS[id]},
-      {speaker:'Lily',text:id==='habitat'?"Now let's check that both monarch life stages have food.":'Looks different! Could another important need be missing?'}
+      {speaker:'Lily',text:GOAL_LILY_LINES[id]}
     ],button:'Keep experimenting'});
   }
   function togglePair(id){
