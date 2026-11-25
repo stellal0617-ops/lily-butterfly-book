@@ -12,10 +12,37 @@ const GOALS=[
   {id:'habitat',label:'Healthy habitat',image:'goal-butterflies-button.png'}
 ];
 const EXAMPLES=[
-  {id:'coral',flower:'pink-flower-bed.png',label:'Pink and coral flowers',description:'An adult butterfly visiting pink and coral flowers.'},
-  {id:'lavender',flower:'mixed-flower-bed.png',label:'Purple flower patch',description:'An adult butterfly visiting a purple flower patch.'},
-  {id:'meadow',flower:'raised-flower-bed.png',label:'Colorful garden',description:'An adult butterfly flying above a colorful garden.'}
+{id:'red',label:'Red zinnia',description:'An adult monarch on a red zinnia.',
+ photo:'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Monarch_Butterfly_Red_Zinnia_2050px.jpg/960px-Monarch_Butterfly_Red_Zinnia_2050px.jpg',
+ author:'Derek Ramsey'},
+{id:'lilac',label:'Purple lilacs',description:'An adult monarch feeding on purple lilacs.',
+ photo:'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Monarch_butterfly_%2853782483856%29.jpg/960px-Monarch_butterfly_%2853782483856%29.jpg',
+ author:'Courtney Celley / USFWS'},
+{id:'spring',label:'Spring flowers',description:'An adult monarch among spring flowers.',
+ photo:'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Monarch_butterfly_in_the_springtime_%28Unsplash%29.jpg/960px-Monarch_butterfly_in_the_springtime_%28Unsplash%29.jpg',
+ author:'Aaron Burden'}
 ];
+const SHORT_GOAL_LINES={
+pretty:'I chose colorful flowers for beauty!',
+budget:'I used fewer plants to save money.',
+habitat:'I added nectar flowers and milkweed!'
+};
+const SHORT_DUAL_LINES={
+'budget+pretty':'Colorful flowers on a small budget!',
+'habitat+pretty':'Beauty AND food for caterpillars!',
+'budget+habitat':'A simple wildlife-friendly garden!'
+};
+const DEFAULT_BUBBLES={
+explore:{lily:'Who can live here?',pip:'I made a beautiful garden!'},
+explain:{lily:'Why did Pip choose these flowers?',pip:'I focused on beauty!'},
+'bias-intro':{lily:'What examples did Pip use?',pip:'I looked at garden pictures!'},
+'bias-cards':{lily:'What do the pictures show?',pip:'I see adult butterflies!'},
+'bias-choice':{lily:'Which important example is missing?',pip:'I need to see the whole story!'},
+goals:{lily:'What changes with each goal?',pip:'You choose what matters!'},
+combine:{lily:'Can we balance two goals?',pip:'Choose two things that matter!'},
+check:{lily:'Did we remember everyone?',pip:'Check both monarch life stages!'},
+celebrate:{lily:'We checked and improved the garden!',pip:'People help me improve!'}
+};
 const GOAL_EXPLANATIONS={
   pretty:'I focused on colorful flowers and decorations. I still need to check for milkweed.',
   budget:'I focused on using fewer, affordable plants. A small budget does not mean we should forget caterpillars.',
@@ -27,7 +54,7 @@ const DUAL_EXPLANATIONS={
   'budget+habitat':'I kept the garden simple and made room for nectar flowers and milkweed.'
 };
 const start=()=>({
-  phase:'explore',mode:'read',feedback:null,
+  phase:'explore',mode:'read',feedback:null,inline:null,
   explored:[],checked:[],reason:'',biasSeen:[],biasAdded:false,
   goal:'pretty',tried:['pretty'],pair:[]
 });
@@ -42,11 +69,10 @@ function Sprite({file,className='',alt=''}) {
   return <img className={className} src={BASE+file} alt={alt} draggable="false" loading="eager"/>;
 }
 function ExampleIllustration({example}) {
-  return <div className={'ch3-example-illustration ch3-example-'+example.id}>
-    <span className="ch3-example-sun" aria-hidden="true"/>
-    <Art name={example.flower} className="ch3-example-plants"/>
-    <Sprite file="butterfly.png" className="ch3-example-butterfly"/>
-    <span className="ch3-example-sparkle" aria-hidden="true">✦</span>
+  return <div className="ch3-example-illustration ch3-example-photo">
+    <img className="ch3-example-photo-image" src={example.photo}
+      alt={example.description} loading="eager" draggable="false"
+      onError={e=>{const img=e.currentTarget;if(!img.dataset.fallback){img.dataset.fallback='yes';img.src=BASE+'butterfly.png';}}}/>
   </div>;
 }
 function GoalOptions({selected,multiple,onChoose}) {
@@ -133,26 +159,34 @@ export default function Game({onComplete}) {
   function stopSpeech(){if(typeof window!=='undefined')window.speechSynthesis?.cancel();setSpeaking(false);}
   function change(phase,mode='read',changes={}) {
     stopSpeech();
-    setG(old=>({...old,phase,mode,feedback:null,...changes}));
+    setG(old=>({...old,phase,mode,feedback:null,inline:null,...changes}));
   }
   function showFeedback(message){
+    // Object clicks and choice clicks update small speech bubbles, NEVER the reading modal.
     stopSpeech();
-    setG(old=>({...old,mode:'read',feedback:message}));
+    const title=message.title||'';
+    const selectedGoal=GOALS.find(item=>title===item.label+' Garden');
+    const byTitle={
+      'The Adult Butterfly':{lily:'The butterfly found nectar!',pip:'Adults drink nectar from flowers.'},
+      'Milkweed Found!':{lily:'The caterpillar found milkweed!',pip:'Milkweed leaves are its food.'},
+      'A Hungry Caterpillar':{lily:'The caterpillar is hungry!',pip:'Monarch caterpillars need milkweed.'},
+      'Flowers Are a Clue':{lily:'Pretty flowers! What about young monarchs?',pip:'Adults need nectar; babies need milkweed.'},
+      'The Goal Matters!':{lily:'Yes! Pip followed my goal.',pip:'Your goal can change my design!'},
+      'Think About Lily’s Request':{lily:'Think about my original request.',pip:'I followed the beauty goal.'},
+      'One of Pip’s Examples':{lily:'That photo shows an adult butterfly.',pip:'My examples only showed adults!'},
+      'We Already Saw That!':{lily:'We already saw adult butterflies.',pip:'What about a caterpillar?'},
+      'A Missing Example!':{lily:'Yes! Add a caterpillar and milkweed!',pip:'My examples missed young monarchs!'}
+    };
+    const inline=selectedGoal?{
+      lily:selectedGoal.id==='habitat'?'Now the caterpillar has food!':selectedGoal.id==='budget'?'Less expensive! What is missing?':'Beautiful! What might be missing?',
+      pip:SHORT_GOAL_LINES[selectedGoal.id]
+    }:byTitle[title]||{lily:'Let us check that idea.',pip:'Good thinking!'};
+    setG(old=>({...old,mode:'interact',feedback:message,inline}));
   }
   function proceed(){
-    if(g.feedback){
-      const action=g.feedback.action||'resume';
-      if(action==='bias-intro')return change('bias-intro');
-      if(action==='goals')return change('goals');
-      if(action==='check')return change('check');
-      return setG(old=>({...old,mode:'interact',feedback:null}));
-    }
-    if(phase==='celebrate'){
-      change('explore','read',start());
-      return;
-    }
+    if(phase==='celebrate')return change('explore','read',start());
     if(phase==='bias-intro')return change('bias-cards','interact');
-    setG(old=>({...old,mode:'interact'}));
+    setG(old=>({...old,mode:'interact',feedback:null}));
   }
   function readAloud(){
     if(typeof window==='undefined'||!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;
@@ -235,16 +269,22 @@ export default function Game({onComplete}) {
   function togglePair(id){
     stopSpeech();
     setG(old=>{
-      const newPair=includes(old.pair,id)?old.pair.filter(x=>x!==id):old.pair.length===2?[old.pair[1],id]:[...old.pair,id];
-      return {...old,pair:newPair};
+      const pair=includes(old.pair,id)?old.pair.filter(item=>item!==id):
+        old.pair.length===2?[old.pair[1],id]:[...old.pair,id];
+      const pairKey=[...pair].sort().join('+');
+      return {...old,pair,feedback:null,mode:'interact',
+        inline:{
+          lily:pair.length===2?'How well does this design work?':'Choose one more goal!',
+          pip:pair.length===2?SHORT_DUAL_LINES[pairKey]:'I can balance two priorities!'
+        }};
     });
   }
   function reviewPair(){
     if(g.pair.length!==2)return;
-    showFeedback({title:'Pip’s Two-Goal Plan',lines:[
-      {speaker:'Pip',text:DUAL_EXPLANATIONS[key]},
-      {speaker:'Lily',text:"Now let's check whether both monarchs have what they need!"}
-    ],button:'Check the garden',action:'check'});
+    change('check','interact',{checked:[],inline:{
+      lily:'Tap both animals to check the garden.',
+      pip:SHORT_DUAL_LINES[key]
+    }});
   }
   function celebrate(){
     stopSpeech();
@@ -253,7 +293,7 @@ export default function Game({onComplete}) {
     onComplete?.('chapter3');
   }
 
-  const text=mode==='read'?(g.feedback||stageMessage(phase)):null;
+  const text=mode==='read'?stageMessage(phase):null;
   return <section className="mini-game ch3-garden-game" aria-label="Chapter 3: a garden for everyone"
     onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}>
     <div className="ch3-stage" data-mode={mode} data-step={phase} data-bias={biasScene?'yes':'no'}
@@ -283,8 +323,8 @@ export default function Game({onComplete}) {
       </div>
       <Sprite file="lily.png" className="ch3-character ch3-character-lily" alt="Lily"/>
       <Sprite file="pip.png" className="ch3-character ch3-character-pip" alt="Pip"/>
-      <div className="ch3-speech ch3-speech-lily"><Art name="bubble-lily"/><span>{phase==='explore'?'Who can live here?':phase==='explain'?'Why did Pip choose these flowers?':biasScene?'What is missing?':phase==='goals'?'What changes with each goal?':phase==='combine'?'Can we balance two goals?':phase==='check'?'Did we remember everyone?':'We checked and improved it!'}</span></div>
-      <div className="ch3-speech ch3-speech-pip"><Art name="bubble-pip"/><span>{phase==='explore'?'I made a beautiful garden!':phase==='explain'?'I focused on beauty!':biasScene?'I learned from some examples!':phase==='goals'?GOAL_EXPLANATIONS[g.goal]:phase==='combine'&&g.pair.length===2?DUAL_EXPLANATIONS[key]:phase==='check'?'Let us check my suggestion.':'People help me improve!'}</span></div>
+      <div className="ch3-speech ch3-speech-lily"><Art name="bubble-lily"/><span>{g.inline?.lily||DEFAULT_BUBBLES[phase]?.lily}</span></div>
+      <div className="ch3-speech ch3-speech-pip"><Art name="bubble-pip"/><span>{g.inline?.pip||DEFAULT_BUBBLES[phase]?.pip}</span></div>
 
       {inspectable&&<div className="ch3-inspection-group">
         <button type="button" className="ch3-visitor ch3-visitor-butterfly ch3-attention-target"
@@ -303,7 +343,7 @@ export default function Game({onComplete}) {
         <div className="ch3-example-grid">{EXAMPLES.map(example=><button type="button" key={example.id}
           className={'ch3-example-card ch3-attention-target '+(includes(g.biasSeen,example.id)?'is-seen':'')}
           onClick={()=>viewExample(example.id)} aria-label={'Inspect picture: '+example.label}>
-          <ExampleIllustration example={example}/><span>{example.label}</span>
+          <ExampleIllustration example={example}/><span>{example.label}</span><small className="ch3-photo-credit">{example.author}</small>
           {includes(g.biasSeen,example.id)&&<b className="ch3-seen-check">✓</b>}
         </button>)}</div>
       </div>}
@@ -337,20 +377,22 @@ export default function Game({onComplete}) {
             <button type="button" className="ch3-answer-card ch3-attention-target" onClick={()=>reason('goal')}>Pip focused on Lily's goal.</button>
             <button type="button" className="ch3-answer-card ch3-attention-target" onClick={()=>reason('mean')}>Pip wanted to be unkind.</button>
           </div>
+          {g.reason==='goal'&&<button type="button" className="ch3-primary" onClick={()=>change('bias-intro')}>See Pip's examples →</button>}
         </div>}
         {phase==='bias-cards'&&<div className="ch3-control-content">
           <strong>What did Pip see?</strong><span className="ch3-dock-hint">{g.biasSeen.length}/3 example pictures explored</span>
           <button type="button" className="ch3-primary" disabled={g.biasSeen.length<3} onClick={()=>change('bias-choice','interact')}>What is missing? →</button>
         </div>}
         {phase==='bias-choice'&&<div className="ch3-control-content">
-          <strong>Pick the missing example</strong><span className="ch3-dock-hint">What would help Pip see the WHOLE monarch life cycle?</span>
+          <strong>Pick the missing example</strong><span className="ch3-dock-hint">{g.biasAdded?'✓ Added a caterpillar + milkweed!':'What helps Pip see the whole monarch life cycle?'}</span>
+          {g.biasAdded&&<button type="button" className="ch3-primary" onClick={()=>change('goals','interact')}>Change Pip's Goals →</button>}
         </div>}
         {phase==='goals'&&<div className="ch3-control-content">
           <strong>What should Pip focus on?</strong>
           <GoalOptions selected={[g.goal]} onChoose={selectGoal}/>
           <div className="ch3-dock-actions">
             <span className="ch3-dock-hint">{g.tried.length}/3 goals tried · try at least two</span>
-            <button type="button" className="ch3-primary" disabled={g.tried.length<2} onClick={()=>change('combine','read',{pair:[]})}>Try two goals →</button>
+            <button type="button" className="ch3-primary" disabled={g.tried.length<2} onClick={()=>change('combine','interact',{pair:[]})}>Try two goals →</button>
           </div>
         </div>}
         {phase==='combine'&&<div className="ch3-control-content">
@@ -365,7 +407,7 @@ export default function Game({onComplete}) {
           <strong>Check both garden visitors</strong>
           <span className="ch3-dock-hint">{['butterfly','caterpillar'].filter(x=>includes(g.checked,x)).length}/2 checked</span>
           <div className="ch3-dock-actions">
-            <button type="button" className="ch3-secondary" onClick={()=>change('combine','read',{checked:[]})}>↶ Change goals</button>
+            <button type="button" className="ch3-secondary" onClick={()=>change('combine','interact',{checked:[],pair:[]})}>↶ Change goals</button>
             {hasVisiting(g.checked)&&habitat&&<button type="button" className="ch3-primary" onClick={celebrate}>Celebrate! ✦</button>}
             {hasVisiting(g.checked)&&!habitat&&<span className="ch3-dock-hint ch3-try-again">Milkweed is missing. Revise the plan!</span>}
           </div>
@@ -374,8 +416,7 @@ export default function Game({onComplete}) {
       <button className="ch3-read-aloud" type="button" onClick={readAloud} disabled={mode!=='read'}
         aria-label={speaking?'Stop reading aloud':'Read the story aloud'}>{speaking?'■ Stop':'♫ Listen'}</button>
 
-      {mode==='read'&&text&&<ReadingOverlay message={text} onContinue={proceed}
-        artAdded={g.biasAdded&&phase==='bias-choice'&&g.feedback?.action==='goals'}/>}
+      {mode==='read'&&text&&<ReadingOverlay message={text} onContinue={proceed}/>}
     </div>
   </section>;
 }

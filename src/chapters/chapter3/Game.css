@@ -461,3 +461,57 @@
   .ch3-reading-layer,.ch3-reading-panel,.ch3-attention-target,
   .ch3-beauty-decoration,.ch3-garden-scenery{animation:none!important;transition:none!important}
 }
+
+
+/* Chapter 3 refinement: cards use REAL monarch photography, and clicking objects
+   updates the character bubbles rather than opening reading panels. */
+.ch3-example-illustration.ch3-example-photo{
+  background:linear-gradient(145deg,#d9eede,#b6dbb1);border:1px solid #c8dfce;
+}
+.ch3-example-photo-image{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center;display:block;pointer-events:none;
+}
+.ch3-example-card{gap:3px}
+.ch3-photo-credit{
+  color:#718d79;font:600 clamp(8px,.77cqw,11px)/1.12 "Trebuchet MS",Arial,sans-serif;
+  margin-bottom:1px;
+}
+/* Larger text in both story bubbles while keeping it inside their frames. */
+.ch3-speech{
+  top:17%;width:27%;aspect-ratio:2.07/1;
+}
+.ch3-speech-lily{left:1.3%}
+.ch3-speech-pip{right:1.8%}
+.ch3-speech>span,
+.ch3-stage[data-mode="interact"] .ch3-speech span{
+  inset:26% 12% 16% 12%;
+  font:700 clamp(12px,1.43cqw,21px)/1.19 "Trebuchet MS",Arial,sans-serif;
+  letter-spacing:-.012em;text-align:center;color:#3a6455;
+  overflow-wrap:break-word;hyphens:auto;
+}
+/* Keep goal selection, example cards, and visitor clicks fully interactive;
+   reserve reading-focus only for story transitions. */
+.ch3-stage[data-step="goals"] .ch3-heading,
+.ch3-stage[data-step="combine"] .ch3-heading,
+.ch3-stage[data-step="check"] .ch3-heading{
+  opacity:1;
+}
+.ch3-stage[data-step="bias-cards"] .ch3-example-board,
+.ch3-stage[data-step="bias-choice"] .ch3-example-board{
+  z-index:10;
+}
+.ch3-example-card.is-seen{background:#f6fff2;border-color:#5a9b74}
+.ch3-example-card .ch3-example-illustration{height:auto;min-height:0}
+.ch3-control-content .ch3-primary{flex-shrink:0}
+@media(max-width:680px){
+  .ch3-speech{top:15%;width:47%;aspect-ratio:2.07}
+  .ch3-speech-lily{left:0}
+  .ch3-speech-pip{right:0}
+  .ch3-speech>span,
+  .ch3-stage[data-mode="interact"] .ch3-speech span{
+    inset:27% 10% 16% 11%;font-size:clamp(10px,2.5cqw,13px);line-height:1.13;
+  }
+  .ch3-photo-credit{font-size:clamp(7px,1.7cqw,9px)}
+  .ch3-example-card{padding:3px}
+}
