@@ -515,3 +515,38 @@
   .ch3-photo-credit{font-size:clamp(7px,1.7cqw,9px)}
   .ch3-example-card{padding:3px}
 }
+
+
+/* Nov 25 refinement: Pip on LEFT; Lily on RIGHT, including their dialogue bubbles.
+   This is scoped to Chapter 3 only and supersedes the old positions. */
+.ch3-character-pip{left:4%;right:auto;top:59%;width:14.5%;height:33%}
+.ch3-character-lily{right:3%;left:auto;top:53%;width:17.5%;height:41%;transform:scaleX(-1)}
+.ch3-speech-pip{left:1.6%;right:auto}
+.ch3-speech-lily{right:1.4%;left:auto}
+
+/* The three real example photographs are illustrative, not clickable targets.
+   The next action is the single "What is missing?" button. */
+.ch3-example-static,
+.ch3-example-static:hover{
+  cursor:default;
+  transform:none;
+  animation:none!important;
+  filter:none;
+  border-color:#e7dabb;
+  background:#fffef9;
+  box-shadow:0 3px 6px #5d795425;
+}
+.ch3-example-static .ch3-example-photo-image{pointer-events:none}
+.ch3-example-static:focus{outline:none}
+
+/* Keep the real milkweed photograph readable within the two choice cards. */
+.ch3-compare-grid .ch3-example-photo-image{object-position:50% 50%}
+.ch3-compare-grid .ch3-example-card{min-height:0}
+.ch3-reading-panel .ch3-reading-line{max-width:65ch}
+
+@media(max-width:680px){
+  .ch3-character-pip{left:1%;right:auto;top:61%;width:24%;height:24%}
+  .ch3-character-lily{right:1%;left:auto;top:58%;width:25%;height:26%;transform:scaleX(-1)}
+  .ch3-speech-pip{left:0;right:auto}
+  .ch3-speech-lily{right:0;left:auto}
+}

@@ -6,6 +6,8 @@ The “What Examples Did Pip See?” activity intentionally uses **three real ph
 2. **Adult monarch feeding on purple lilacs** — Courtney Celley / U.S. Fish and Wildlife Service (2024), [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Monarch_butterfly_(53782483856).jpg). **Public domain** as a work of a U.S. federal government employee.
 3. **Adult monarch among spring flowers** — Aaron Burden (2016), [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Monarch_butterfly_in_the_springtime_(Unsplash).jpg), **CC0 1.0**.
 
+4. **Monarch caterpillar on common milkweed** — Courtney Celley / U.S. Fish and Wildlife Service (2019), [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Monarch_Caterpillar_on_Common_Milkweed_(48472709127).jpg). **Public domain** as a U.S. federal government work. This real photograph appears beside the adult butterfly in the **Which example should Pip add?** comparison.
+
 The site currently loads these photographs from Wikimedia Commons URLs. The source pages contain the full image licenses. These photo cards are separate from the illustrated Lily/Pip garden assets.
 
 If the external image URLs become unavailable, replace them with locally stored, properly attributed copies. The UI has a butterfly illustration fallback to avoid a broken-image icon.

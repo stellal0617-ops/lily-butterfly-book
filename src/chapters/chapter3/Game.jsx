@@ -55,7 +55,7 @@ const DUAL_EXPLANATIONS={
 };
 const start=()=>({
   phase:'explore',mode:'read',feedback:null,inline:null,
-  explored:[],checked:[],reason:'',biasSeen:[],biasAdded:false,
+  explored:[],checked:[],reason:'',biasAdded:false,
   goal:'pretty',tried:['pretty'],pair:[]
 });
 const includes=(arr,item)=>arr.includes(item);
@@ -89,7 +89,7 @@ function GoalOptions({selected,multiple,onChoose}) {
 function ReadingOverlay({message,onContinue,artAdded}) {
   return <div className="ch3-reading-layer">
     <div className="ch3-reading-panel" role="dialog" aria-modal="true" aria-label={message.title}>
-      <span className="ch3-reading-kicker">LILY & PIP · LOOK, THINK, LEARN</span>
+      <span className="ch3-reading-kicker">LOOK · THINK · LEARN</span>
       <h4>{message.title}</h4>
       {message.lines.map((line,i)=><p className="ch3-reading-line" key={i}>
         {line.speaker&&<strong>{line.speaker}: </strong>}{line.text}
@@ -113,9 +113,9 @@ function stageMessage(phase) {
       {speaker:'Lily',text:"It looks lovely. Let's see who can live here!"}
     ],note:'First, explore the garden. Find both visitors.',button:'Explore the garden'};
     case 'explain':return {title:'Why Did Pip Forget?',lines:[
-      {speaker:'Lily',text:"Why didn't you plant milkweed, Pip?"},
-      {speaker:'Pip',text:'You asked for a beautiful garden, so I focused on colorful flowers!'}
-    ],note:"A goal tells AI what to focus on. Let's think about that.",button:"Answer Lily's question"};
+      {text:'Pip was trying to make a beautiful garden, so it chose lots of colorful flowers. But it forgot to add milkweed, which monarch caterpillars need for food.'},
+      {text:'This shows how the goals people give AI can shape its suggestions—and what it might miss.'}
+    ],note:'Think about the goal Lily gave Pip.',button:'Why did Pip choose the flowers?'};
     case 'bias-intro':return {title:'What Examples Did Pip See?',lines:[
       {speaker:'Pip',text:'I looked at examples of butterfly gardens!'},
       {speaker:'Lily',text:"Let's look closely. Do the examples show the whole story?"}
@@ -237,14 +237,6 @@ export default function Game({onComplete}) {
       ],button:'Try the question again'});
     }
   }
-  function viewExample(id){
-    setG(old=>({...old,biasSeen:[...new Set([...old.biasSeen,id])]}));
-    const example=EXAMPLES.find(x=>x.id===id);
-    showFeedback({title:'One of Pip’s Examples',lines:[
-      {speaker:'Pip',text:example.description},
-      {speaker:'Lily',text:'That shows an adult butterfly. What about young monarchs?'}
-    ],button:'Look at more pictures'});
-  }
   function missingExample(id){
     if(id==='adult'){
       showFeedback({title:'We Already Saw That!',lines:[
@@ -339,13 +331,13 @@ export default function Game({onComplete}) {
           onClick={()=>inspect('flowers')} aria-label="Examine the flowers">✦</button>}
       </div>}
       {mode==='interact'&&phase==='bias-cards'&&<div className="ch3-example-board">
-        <h4>Look at Pip's three examples</h4><p>Tap each picture. What do they have in common?</p>
-        <div className="ch3-example-grid">{EXAMPLES.map(example=><button type="button" key={example.id}
-          className={'ch3-example-card ch3-attention-target '+(includes(g.biasSeen,example.id)?'is-seen':'')}
-          onClick={()=>viewExample(example.id)} aria-label={'Inspect picture: '+example.label}>
-          <ExampleIllustration example={example}/><span>{example.label}</span><small className="ch3-photo-credit">{example.author}</small>
-          {includes(g.biasSeen,example.id)&&<b className="ch3-seen-check">✓</b>}
-        </button>)}</div>
+        <h4>Look at Pip's three examples</h4>
+        <p>All three photos show adult butterflies. What might be missing?</p>
+        <div className="ch3-example-grid">{EXAMPLES.map(example=><div
+          className="ch3-example-card ch3-example-static" key={example.id}>
+          <ExampleIllustration example={example}/><span>{example.label}</span>
+          <small className="ch3-photo-credit">{example.author}</small>
+        </div>)}</div>
       </div>}
       {mode==='interact'&&phase==='bias-choice'&&<div className="ch3-example-board ch3-compare-board">
         <h4>Which example should Pip add?</h4><p>Choose the picture that shows a missing need.</p>
@@ -356,10 +348,13 @@ export default function Game({onComplete}) {
           </button>
           <button type="button" className="ch3-example-card ch3-attention-target"
             onClick={()=>missingExample('caterpillar')}>
-            <div className="ch3-example-illustration ch3-example-young">
-              <Art name="milkweed-bed-sign" className="ch3-example-plants"/>
-              <Sprite file="caterpillar-happy.png" className="ch3-example-caterpillar"/>
-            </div><span>Caterpillar + milkweed</span>
+            <div className="ch3-example-illustration ch3-example-photo">
+              <img className="ch3-example-photo-image"
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Monarch_Caterpillar_on_Common_Milkweed_%2848472709127%29.jpg/960px-Monarch_Caterpillar_on_Common_Milkweed_%2848472709127%29.jpg"
+                alt="Real photograph of a monarch caterpillar on a common milkweed leaf, by Courtney Celley, USFWS"
+                loading="eager" draggable="false"
+                onError={event=>{const img=event.currentTarget;if(!img.dataset.fallback){img.dataset.fallback='yes';img.src=BASE+'caterpillar-happy.png';}}}/>
+            </div><span>Caterpillar + milkweed</span><small className="ch3-photo-credit">Courtney Celley / USFWS</small>
           </button>
         </div>
       </div>}
@@ -380,8 +375,9 @@ export default function Game({onComplete}) {
           {g.reason==='goal'&&<button type="button" className="ch3-primary" onClick={()=>change('bias-intro')}>See Pip's examples →</button>}
         </div>}
         {phase==='bias-cards'&&<div className="ch3-control-content">
-          <strong>What did Pip see?</strong><span className="ch3-dock-hint">{g.biasSeen.length}/3 example pictures explored</span>
-          <button type="button" className="ch3-primary" disabled={g.biasSeen.length<3} onClick={()=>change('bias-choice','interact')}>What is missing? →</button>
+          <strong>What did Pip see?</strong>
+          <span className="ch3-dock-hint">Look at all three photos and find the missing part of the story.</span>
+          <button type="button" className="ch3-primary" onClick={()=>change('bias-choice','interact')}>What is missing? →</button>
         </div>}
         {phase==='bias-choice'&&<div className="ch3-control-content">
           <strong>Pick the missing example</strong><span className="ch3-dock-hint">{g.biasAdded?'✓ Added a caterpillar + milkweed!':'What helps Pip see the whole monarch life cycle?'}</span>
