@@ -290,7 +290,7 @@ export default function Game({ onComplete }) {
       <div className="ch3-control-dock" aria-label="Garden game controls">
         {step === 'explore' && <div className="ch3-control-content">
           <strong>Garden detective</strong>
-          <span className="ch3-dock-hint">{game.explored.length}/2 visitors checked · Find the butterfly and caterpillar</span>
+          <span className="ch3-dock-hint">{['butterfly', 'caterpillar'].filter(id => game.explored.includes(id)).length}/2 visitors checked · Find the butterfly and caterpillar</span>
           <button type="button" className="ch3-primary" disabled={!exploredBoth}
             onClick={() => goTo('explain')}>What did Pip miss? <span aria-hidden="true">→</span></button>
         </div>}
@@ -323,7 +323,7 @@ export default function Game({ onComplete }) {
 
         {step === 'check' && <div className="ch3-control-content">
           <strong>Who did Pip remember?</strong>
-          <span className="ch3-dock-hint">Tap BOTH visitors to check · {game.checked.length}/2 checked</span>
+          <span className="ch3-dock-hint">Tap BOTH visitors to check · {['butterfly', 'caterpillar'].filter(id => game.checked.includes(id)).length}/2 checked</span>
           <div className="ch3-dock-actions">
             <button type="button" className="ch3-secondary" onClick={() => goTo('combine')}>↶ Change goals</button>
             {hasHabitat && checkedBoth && <button type="button" className="ch3-primary"
