@@ -1,6 +1,7 @@
 import React from 'react';
 import Game from './Game.jsx';
 import Chapter3Intro from './Chapter3Intro.jsx';
+import Chapter3Ending from './Chapter3Ending.jsx';
 
 export const chapter3Pages=[
   {
@@ -21,14 +22,8 @@ export const chapter3Pages=[
   {
     id:'ch3-reflection',
     chapterLabel:'CHAPTER THREE · HUMAN VALUES & FAIRNESS',
-    theme:'peach',illustration:'🌼',title:'What Did Pip Learn?',
-    subtitle:'Goals matter. Examples matter. People matter.',
-    Content:()=> <>
-      <p><strong>Goals matter.</strong> Pip designed the garden differently when Lily changed what she asked for.</p>
-      <p><strong>Examples matter.</strong> Pip's first pictures showed adult butterflies but missed caterpillars and milkweed. Missing examples can give AI an incomplete picture.</p>
-      <p><strong>People matter.</strong> Lily checked the recommendation and helped Pip notice what was missing.</p>
-      <p>“AI can help us make choices,” Lily says, “but we should always ask whose needs might have been left out.”</p>
-      <p className="concept-pill">BIG IDEA · Check the goals, check the examples, and check the results!</p>
-    </>
+    theme:'garden',illustration:'🦋',title:'What Did We Learn, Pip?',
+    subtitle:'The garden was now full of life!',
+    Content:()=> <Chapter3Ending/>
   }
 ];

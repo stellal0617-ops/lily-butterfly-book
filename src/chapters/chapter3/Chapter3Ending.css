@@ -1,0 +1,38 @@
+/* Chapter 3 ending: full image, no duplicated labels or separate lesson cards. */
+.spread.ch3-ending-spread {
+  isolation:isolate;
+  background:#9edcdb;
+}
+.ch3-ending {
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  isolation:isolate;
+}
+.ch3-ending-illustration {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:fill; /* Fit the complete 16:9 artwork to the book's 8:5 spread; never crop dialogue. */
+  image-rendering:auto;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+.ch3-ending-readable {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:normal;
+  border:0;
+}
+@media(max-width:680px) {
+  /* Present the artwork's left and right halves as consecutive mobile pages. */
+  .spread.ch3-ending-spread {width:200%;transform:translateX(0)}
+  .spread.ch3-ending-spread.ch3-ending-show-right {transform:translateX(-50%)}
+}

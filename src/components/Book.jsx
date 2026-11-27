@@ -34,8 +34,11 @@ function OnePage({item,side,onComplete,isMobile,activeSide}){
 }
 function Spread({item,onComplete,onTurnNext,isMobile,activeSide}){
  const isGame=item.kind==='game'; const Content=item.Content;
- if(item.id==='ch3-intro'){
-   return <div className={`spread ch3-intro-spread ${isMobile&&activeSide==='right'?'ch3-intro-show-right':''}`} data-spread-id={item.id}>
+ if(item.id==='ch3-intro'||item.id==='ch3-reflection'){
+   const isIntro=item.id==='ch3-intro';
+   const spreadClass=isIntro?'ch3-intro-spread':'ch3-ending-spread';
+   const mobileClass=isIntro?'ch3-intro-show-right':'ch3-ending-show-right';
+   return <div className={`spread ${spreadClass} ${isMobile&&activeSide==='right'?mobileClass:''}`} data-spread-id={item.id}>
      <Content onTurnNext={onTurnNext}/>
      <div className="center-gutter" aria-hidden="true"/>
    </div>;
@@ -85,8 +88,12 @@ export default function Book({spreads,onComplete}){
   const pageSelector=mobileRef.current
     ? (sideRef.current==='left'?' .ch3-opening-left':' .ch3-opening-right')
     : ' .ch3-opening';
+  const endingSelector=mobileRef.current
+    ? (sideRef.current==='left'?' .ch3-ending-readable-left':' .ch3-ending-readable-right')
+    : ' .ch3-ending-readable';
   const visible=document.querySelector(spreadSelector+' .story-copy')
-    ||document.querySelector(spreadSelector+pageSelector);
+    ||document.querySelector(spreadSelector+pageSelector)
+    ||document.querySelector(spreadSelector+endingSelector);
   const text=visible?.innerText?.trim()||spreads[index].title;
   stopSpeech();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='en-US';utterance.rate=.88;utterance.onend=()=>setSpeaking(false);utterance.onerror=()=>setSpeaking(false);window.speechSynthesis.speak(utterance);setSpeaking(true);
  };
