@@ -615,3 +615,45 @@
     font-size:clamp(9px,1.96cqw,12px);line-height:1.1;
   }
 }
+
+/* Asset cleanup: several early character/landscape PNG exports contain unrelated
+   illustration scraps OUTSIDE the intended silhouettes. The masks target only
+   those scrap zones; butterfly wings, stepping stones and Pip remain visible. */
+
+/* The original butterfly-adult asset contains a pink blossom scrap below its
+   complete monarch. Keep the intact monarch, mask the unrelated lower strip. */
+.ch3-sky-butterfly {
+  clip-path: inset(0 0 19% 0);
+}
+
+/* The stepping-stones PNG contains stray partial character faces below the
+   lowest stone. Keep every stepping stone and its surrounding grasses. */
+.ch3-stones {
+  clip-path: inset(0 0 19% 0);
+}
+
+/* The Pip cutout has a second partial robot head in its bottom-right corner.
+   Mask only that corner, not either hand or either foot. */
+.ch3-character-pip {
+  clip-path: polygon(0 0, 100% 0, 100% 76%, 77% 76%, 77% 100%, 0 100%);
+}
+
+/* The trellis export has isolated leftover flower petals just beyond the
+   lower rocks; retain the full arch and stones. */
+.ch3-trellis {
+  clip-path: inset(0 0 5% 0);
+}
+
+/* Feather the transparent lower outside edge of the habitat cutout so the
+   source image's faint cyan rectangular fringe cannot show over the grass.
+   The planted bed, logs, flowers and pond stay fully visible. */
+.ch3-bed-habitat {
+  -webkit-mask-image: linear-gradient(to bottom,#000 0%,#000 86%,transparent 100%);
+  mask-image: linear-gradient(to bottom,#000 0%,#000 86%,transparent 100%);
+}
+
+/* Never clip intended subjects when the furniture and flowers overlap them. */
+.ch3-garden-scenery, .ch3-sky-ornaments { overflow: visible; }
+.ch3-sky-butterfly, .ch3-stones, .ch3-character-pip, .ch3-trellis {
+  object-fit: contain;
+}
