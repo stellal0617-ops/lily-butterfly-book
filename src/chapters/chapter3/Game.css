@@ -550,3 +550,68 @@
   .ch3-speech-pip{left:0;right:auto}
   .ch3-speech-lily{right:0;left:auto}
 }
+
+
+/* Nov 27 — make the original character speech bubbles comfortably readable.
+   The banner was removed; use the open sky for decorative, non-clickable butterflies. */
+.ch3-sky-ornaments{position:absolute;inset:0;z-index:3;pointer-events:none;user-select:none}
+.ch3-sky-butterfly{
+  position:absolute;display:block;object-fit:contain;width:6.4%;height:10%;
+  opacity:.83;filter:drop-shadow(1px 3px 2px #397b6833);
+}
+.ch3-sky-butterfly-a{left:37%;top:6.5%;transform:rotate(-19deg) scale(.8)}
+.ch3-sky-butterfly-b{left:57%;top:8.5%;transform:scaleX(-1) rotate(16deg) scale(.7)}
+.ch3-sky-sparkle{position:absolute;color:#fff8ca;font:700 clamp(13px,1.8cqw,25px)/1 Georgia,serif;text-shadow:0 1px 5px #7fc4ad}
+.ch3-sky-sparkle-a{left:43%;top:6.5%}
+.ch3-sky-sparkle-b{left:63%;top:11%}
+
+/* Text fits the white interior of the existing illustrated bubbles.
+   Larger by default; density variants keep extended responses inside. */
+.ch3-speech{top:16.6%;width:29%;aspect-ratio:2.07/1;opacity:1}
+.ch3-speech-pip{left:.6%;right:auto}
+.ch3-speech-lily{right:.6%;left:auto}
+.ch3-speech>span,
+.ch3-stage[data-mode="interact"] .ch3-speech span{
+  inset:24% 10% 15% 11%;
+  display:flex;justify-content:center;align-items:center;
+  color:#315f54;text-align:center;
+  font-family:"Trebuchet MS",Arial,sans-serif;
+  font-size:clamp(15px,1.84cqw,27px);
+  font-weight:800;line-height:1.15;letter-spacing:-.012em;
+  overflow-wrap:break-word;hyphens:auto;
+  text-wrap:balance;
+}
+.ch3-speech>span[data-density="medium"],
+.ch3-stage[data-mode="interact"] .ch3-speech span[data-density="medium"]{
+  font-size:clamp(14px,1.52cqw,23px);line-height:1.15;
+}
+.ch3-speech>span[data-density="compact"],
+.ch3-stage[data-mode="interact"] .ch3-speech span[data-density="compact"]{
+  inset:22% 8% 13% 9%;
+  font-size:clamp(12px,1.29cqw,19px);line-height:1.12;
+}
+.ch3-stage[data-bias="yes"][data-mode="interact"] .ch3-speech{opacity:.68}
+
+@media(max-width:680px){
+  .ch3-sky-butterfly{width:10%;height:8%}
+  .ch3-sky-butterfly-a{left:41%;top:5%}
+  .ch3-sky-butterfly-b{left:57%;top:7%}
+  .ch3-sky-sparkle{font-size:clamp(11px,2.4cqw,17px)}
+  .ch3-speech{top:14%;width:49%;aspect-ratio:1.86/1}
+  .ch3-speech-pip{left:0;right:auto}
+  .ch3-speech-lily{right:0;left:auto}
+  .ch3-speech>span,
+  .ch3-stage[data-mode="interact"] .ch3-speech span{
+    inset:23% 9% 13% 9%;
+    font-size:clamp(11px,2.65cqw,16px);line-height:1.12;
+  }
+  .ch3-speech>span[data-density="medium"],
+  .ch3-stage[data-mode="interact"] .ch3-speech span[data-density="medium"]{
+    font-size:clamp(10px,2.2cqw,14px);line-height:1.12;
+  }
+  .ch3-speech>span[data-density="compact"],
+  .ch3-stage[data-mode="interact"] .ch3-speech span[data-density="compact"]{
+    inset:21% 7% 11% 7%;
+    font-size:clamp(9px,1.96cqw,12px);line-height:1.1;
+  }
+}

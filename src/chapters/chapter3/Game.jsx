@@ -287,6 +287,10 @@ export default function Game({onComplete,onTurnNext}) {
     onComplete?.('chapter3');
   }
 
+  // Keep short bubble lines large, and reduce only longer dialogue to prevent clipping.
+  const lilySpeech=g.inline?.lily||DEFAULT_BUBBLES[phase]?.lily||'';
+  const pipSpeech=g.inline?.pip||DEFAULT_BUBBLES[phase]?.pip||'';
+  const speechDensity=value=>value.length>88?'compact':value.length>55?'medium':'large';
   const text=mode==='read'?stageMessage(phase):null;
   return <section className="mini-game ch3-garden-game" aria-label="Chapter 3: a garden for everyone"
     onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()}>
@@ -312,13 +316,17 @@ export default function Game({onComplete,onTurnNext}) {
         <Art name="milkweed-bed-sign" className="ch3-plant-sign ch3-milkweed-sign"/>
         <Art name="nectar-bed-sign" className="ch3-plant-sign ch3-nectar-sign"/>
       </div>
-      <div className="ch3-heading"><span className="ch3-eyebrow">CHAPTER THREE · HUMAN VALUES & FAIRNESS</span>
-        <h3>{phase.startsWith('bias')?'What Examples Did Pip See?':phase==='explore'?'Who Can Live Here?':phase==='explain'?'Why Did Pip Forget?':phase==='goals'?"Change Pip's Goals!":phase==='combine'?'Two Goals, One Garden!':phase==='check'?'Check the Garden!':'A Garden for Everyone!'}</h3>
+      {/* The chapter banner is intentionally omitted; let the sky and layered artwork lead. */}
+      <div className="ch3-sky-ornaments" aria-hidden="true">
+        <Art name="butterfly-adult" className="ch3-sky-butterfly ch3-sky-butterfly-a"/>
+        <Art name="butterfly-adult" className="ch3-sky-butterfly ch3-sky-butterfly-b"/>
+        <span className="ch3-sky-sparkle ch3-sky-sparkle-a">✦</span>
+        <span className="ch3-sky-sparkle ch3-sky-sparkle-b">✧</span>
       </div>
       <Sprite file="lily.png" className="ch3-character ch3-character-lily" alt="Lily"/>
       <Sprite file="pip.png" className="ch3-character ch3-character-pip" alt="Pip"/>
-      <div className="ch3-speech ch3-speech-lily"><Art name="bubble-lily"/><span>{g.inline?.lily||DEFAULT_BUBBLES[phase]?.lily}</span></div>
-      <div className="ch3-speech ch3-speech-pip"><Art name="bubble-pip"/><span>{g.inline?.pip||DEFAULT_BUBBLES[phase]?.pip}</span></div>
+      <div className="ch3-speech ch3-speech-lily"><Art name="bubble-lily"/><span data-density={speechDensity(lilySpeech)}>{lilySpeech}</span></div>
+      <div className="ch3-speech ch3-speech-pip"><Art name="bubble-pip"/><span data-density={speechDensity(pipSpeech)}>{pipSpeech}</span></div>
 
       {inspectable&&<div className="ch3-inspection-group">
         <button type="button" className="ch3-visitor ch3-visitor-butterfly ch3-attention-target"
