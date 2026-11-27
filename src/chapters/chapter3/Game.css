@@ -657,3 +657,26 @@
 .ch3-sky-butterfly, .ch3-stones, .ch3-character-pip, .ch3-trellis {
   object-fit: contain;
 }
+
+
+/* Final clean-up: intact SVG monarchs replace the damaged butterfly PNG.
+   Remove the older broad crop, which clipped the lower wing. */
+.ch3-sky-butterfly {
+  clip-path:none;
+  overflow:visible;
+  width:6.7%;
+  height:10.5%;
+  filter:drop-shadow(1px 3px 2px #397b6830);
+}
+/* The exported "Save money" PNG includes duplicate green slivers at the
+   extreme left/right. Crop ONLY those disconnected slivers, not the main
+   rounded button or its icon/lettering. */
+.ch3-goal-card[data-goal="budget"] .ch3-art {
+  clip-path:inset(0 3.6% 0 3.6%);
+}
+.ch3-goal-card[data-goal="budget"] {
+  isolation:isolate;
+}
+@media(max-width:680px) {
+  .ch3-sky-butterfly {clip-path:none;overflow:visible}
+}

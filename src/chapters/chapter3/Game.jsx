@@ -73,6 +73,33 @@ function Art({name,className='',alt=''}) {
 function Sprite({file,className='',alt=''}) {
   return <img className={className} src={BASE+file} alt={alt} draggable="false" loading="eager"/>;
 }
+
+// Draw decorative monarchs as complete vectors. The old exported PNG contained
+// unrelated pink fragments beneath the butterfly, so never reuse it for sky art.
+function SkyMonarch({className=''}) {
+  return <svg className={'ch3-sky-butterfly '+className} xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 180 140" aria-hidden="true" focusable="false">
+    <g stroke="#594536" strokeWidth="5" strokeLinejoin="round" strokeLinecap="round">
+      <path d="M86 69 C43 17 14 15 13 33 C5 56 45 78 82 86 Z" fill="#f3a449"/>
+      <path d="M94 69 C137 17 166 15 167 33 C175 56 135 78 98 86 Z" fill="#f3a449"/>
+      <path d="M82 85 C42 77 18 90 24 114 C38 136 69 117 87 97 Z" fill="#eb843f"/>
+      <path d="M98 85 C138 77 162 90 156 114 C142 136 111 117 93 97 Z" fill="#eb843f"/>
+      <path d="M86 69 C53 42 40 36 18 35 M86 80 L55 64 M82 89 L45 98 M94 69 C127 42 140 36 162 35 M94 80 L125 64 M98 89 L135 98"
+        strokeWidth="3" fill="none"/>
+    </g>
+    <g fill="#fff9dc">
+      <circle cx="18" cy="41" r="3.2"/><circle cx="24" cy="52" r="2.8"/>
+      <circle cx="35" cy="62" r="2.8"/><circle cx="40" cy="103" r="3"/>
+      <circle cx="52" cy="116" r="3"/><circle cx="162" cy="41" r="3.2"/>
+      <circle cx="156" cy="52" r="2.8"/><circle cx="145" cy="62" r="2.8"/>
+      <circle cx="140" cy="103" r="3"/><circle cx="128" cy="116" r="3"/>
+    </g>
+    <path d="M90 78 Q84 54 87 48 Q90 45 93 48 Q96 54 90 78 L94 106 Q90 116 86 106 Z"
+      fill="#4d4236" stroke="#594536" strokeWidth="2"/>
+    <path d="M88 50 Q79 35 72 34 M92 50 Q101 35 108 34" fill="none"
+      stroke="#594536" strokeWidth="2.5" strokeLinecap="round"/>
+  </svg>;
+}
 function ExampleIllustration({example}) {
   return <div className="ch3-example-illustration ch3-example-photo">
     <img className="ch3-example-photo-image" src={example.photo}
@@ -84,7 +111,7 @@ function GoalOptions({selected,multiple,onChoose}) {
   return <div className="ch3-goal-choices" role="group" aria-label={multiple?'Select two garden priorities':'Select one garden priority'}>
     {GOALS.map(goal=><button type="button" key={goal.id}
       className={'ch3-goal-card ch3-attention-target '+(selected.includes(goal.id)?'is-selected':'')}
-      aria-pressed={selected.includes(goal.id)} aria-label={goal.label} title={goal.label}
+      data-goal={goal.id} aria-pressed={selected.includes(goal.id)} aria-label={goal.label} title={goal.label}
       onClick={()=>onChoose(goal.id)}>
       <Art name={goal.image} alt=""/>
       <span className="ch3-goal-caption">{goal.label}</span>
@@ -318,8 +345,8 @@ export default function Game({onComplete,onTurnNext}) {
       </div>
       {/* The chapter banner is intentionally omitted; let the sky and layered artwork lead. */}
       <div className="ch3-sky-ornaments" aria-hidden="true">
-        <Art name="butterfly-adult" className="ch3-sky-butterfly ch3-sky-butterfly-a"/>
-        <Art name="butterfly-adult" className="ch3-sky-butterfly ch3-sky-butterfly-b"/>
+        <SkyMonarch className="ch3-sky-butterfly-a"/>
+        <SkyMonarch className="ch3-sky-butterfly-b"/>
         <span className="ch3-sky-sparkle ch3-sky-sparkle-a">✦</span>
         <span className="ch3-sky-sparkle ch3-sky-sparkle-b">✧</span>
       </div>
