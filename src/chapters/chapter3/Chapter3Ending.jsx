@@ -10,7 +10,7 @@ export default function Chapter3Ending() {
     <img
       className="ch3-ending-illustration"
       src="/chapter3/ch3-ending-full.webp"
-      width="1671" height="941"
+      width="1536" height="960"
       alt="Lily and Pip smile in their thriving butterfly garden. On the other page, they discuss goals, seeing more examples, and checking AI ideas together."
       draggable="false"
       decoding="async"
