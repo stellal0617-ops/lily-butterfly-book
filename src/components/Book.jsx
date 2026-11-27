@@ -32,14 +32,14 @@ function OnePage({item,side,onComplete,isMobile,activeSide}){
    </div>
  </section>;
 }
-function Spread({item,onComplete,isMobile,activeSide}){
+function Spread({item,onComplete,onTurnNext,isMobile,activeSide}){
  const isGame=item.kind==='game'; const Content=item.Content;
  return <div className={`spread theme-${item.theme||'garden'} ${isGame?'spread-is-game':''}`} data-spread-id={item.id}>
    <OnePage item={item} side="left" onComplete={onComplete} isMobile={isMobile} activeSide={activeSide}/>
    <OnePage item={item} side="right" onComplete={onComplete} isMobile={isMobile} activeSide={activeSide}/>
    {isGame&&<div className="spread-game-overlay">
      <div className="game-story-heading"><span>LET'S EXPLORE WITH PIP</span><h2>{item.title}</h2><p>{item.subtitle}</p></div>
-     <div className="game-area"><Content onComplete={onComplete}/></div>
+     <div className="game-area"><Content onComplete={onComplete} onTurnNext={onTurnNext}/></div>
      <div className="pip-reaction" aria-label="Pip is here to help">🤖 <span>Pip says: “Try it! Each clue teaches us something.”</span></div>
    </div>}
    <div className="center-gutter" aria-hidden="true"/>
@@ -56,11 +56,11 @@ export default function Book({spreads,onComplete}){
  },[]);
  const stopSpeech=useCallback(()=>{if('speechSynthesis' in window){window.speechSynthesis.cancel()}setSpeaking(false);},[]);
  useEffect(()=>()=>{clearTimeout(timer.current);if('speechSynthesis' in window)window.speechSynthesis.cancel();},[]);
- const go=useCallback((delta)=>{
+ const go=useCallback((delta,skipMobileSide=false)=>{
    if(busy.current)return;
    const oldIndex=indexRef.current,oldSide=sideRef.current,mobile=mobileRef.current;
    let nextIndex=oldIndex,nextSide=oldSide;
-   if(mobile){if(delta>0){if(oldSide==='left')nextSide='right';else {nextSide='left';nextIndex++;}}else{if(oldSide==='right')nextSide='left';else{nextSide='right';nextIndex--;}}}
+   if(mobile){if(skipMobileSide&&delta>0){nextSide='left';nextIndex++;}else if(delta>0){if(oldSide==='left')nextSide='right';else {nextSide='left';nextIndex++;}}else{if(oldSide==='right')nextSide='left';else{nextSide='right';nextIndex--;}}}
    else nextIndex+=delta;
    if(nextIndex<0||nextIndex>=spreads.length)return;
    stopSpeech();busy.current=true;
@@ -86,7 +86,7 @@ export default function Book({spreads,onComplete}){
   <div className="reader-toolbar"><span className="reader-mini-label">✿ &nbsp; A LITTLE BOOK OF BIG IDEAS</span><button className="narrate-control" aria-label={speaking?'Stop reading aloud':'Read this spread aloud'} onClick={narration} title={speaking?'Stop reading':'Read aloud'}>{speaking?'■ Stop reading':'◖)) Read aloud'}</button></div>
   <div className="book-object"><div className="book-viewport" onPointerDown={pointerDown} onPointerUp={pointerUp}>
    {spreads.map((item,i)=><div key={item.id} className={`spread-holder ${i===index?'visible-spread':''}`} data-position={i} aria-hidden={i!==index} style={{display:i===index?'block':'none'}}>
-      <Spread item={item} onComplete={onComplete} isMobile={isMobile} activeSide={side}/>
+      <Spread item={item} onComplete={onComplete} onTurnNext={()=>go(1,true)} isMobile={isMobile} activeSide={side}/>
     </div>)}
    {turn&&<div className={`paper-turn ${turn.delta>0?'turn-next':'turn-previous'}`} aria-hidden="true"><div className="paper-turn-front"/><div className="paper-turn-back"/></div>}
    <button type="button" className="book-corner book-corner-prev" aria-label="Turn to previous page" onClick={()=>go(-1)} disabled={position===0||!!turn}><span>↶</span></button>

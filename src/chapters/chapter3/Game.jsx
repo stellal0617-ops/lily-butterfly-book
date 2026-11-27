@@ -59,7 +59,7 @@ const DUAL_EXPLANATIONS={
   'budget+habitat':'I kept the garden simple and made room for nectar flowers and milkweed.'
 };
 const start=()=>({
-  phase:'explore',mode:'read',feedback:null,inline:null,
+  phase:'explore',mode:'interact',feedback:null,inline:null,
   explored:[],checked:[],reason:'',biasAdded:false,
   goal:'pretty',tried:['pretty'],pair:[]
 });
@@ -113,10 +113,6 @@ function ReadingOverlay({message,onContinue,artAdded}) {
 }
 function stageMessage(phase) {
   switch(phase){
-    case 'explore':return {title:'Who Can Live Here?',lines:[
-      {speaker:'Pip',text:'Look, Lily! I made a beautiful butterfly garden!'},
-      {speaker:'Lily',text:"It looks lovely. Let's see who can live here!"}
-    ],note:'First, explore the garden. Find both visitors.',button:'Explore the garden'};
     case 'explain':return {title:'Why Did Pip Forget?',lines:[
       {text:'Pip wanted to make a really pretty garden. It picked lots of bright, colorful flowers!'},
       {text:'But oh no! Pip forgot the milkweed. Now the hungry caterpillar has nothing to eat!'}
@@ -141,13 +137,13 @@ function stageMessage(phase) {
       {text:'Butterflies flutter from flower to flower.'},
       {text:'A little caterpillar munches happily on a milkweed leaf.'},
       {text:'The garden is bright, beautiful, and full of life!'}
-    ],button:'Play again'};
+    ],button:'Turn the page'};
     default:return null;
   }
 }
 const hasVisiting=(items)=>includes(items,'butterfly')&&includes(items,'caterpillar');
 
-export default function Game({onComplete}) {
+export default function Game({onComplete,onTurnNext}) {
   const [g,setG]=useState(start);
   const [speaking,setSpeaking]=useState(false);
   const phase=g.phase,mode=g.mode;
@@ -190,7 +186,7 @@ export default function Game({onComplete}) {
     setG(old=>({...old,mode:'interact',feedback:message,inline}));
   }
   function proceed(){
-    if(phase==='celebrate')return change('explore','read',start());
+    if(phase==='celebrate'){onTurnNext?.();return;}
     if(phase==='bias-intro')return change('bias-cards','interact');
     setG(old=>({...old,mode:'interact',feedback:null}));
   }

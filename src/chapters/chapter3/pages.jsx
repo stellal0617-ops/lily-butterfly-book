@@ -19,7 +19,7 @@ export const chapter3Pages=[
     chapterLabel:'CHAPTER THREE · HUMAN VALUES & FAIRNESS',
     theme:'mint',illustration:'🦋',title:'A Garden for Everyone',
     subtitle:'Explore, examine examples, change goals, and check your choices.',
-    Content:({onComplete})=><Game onComplete={onComplete}/>
+    Content:({onComplete,onTurnNext})=><Game onComplete={onComplete} onTurnNext={onTurnNext}/>
   },
   {
     id:'ch3-reflection',
