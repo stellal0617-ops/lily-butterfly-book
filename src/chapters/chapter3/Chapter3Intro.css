@@ -1,99 +1,58 @@
-/* Layered live text above the illustrated Chapter 3 opening spread.
-   The background illustration is text-free and is hosted with the repository. */
-.spread.ch3-intro-spread{isolation:isolate;background:#d0eee0}
-.ch3-opening{
-  position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate;
-  container-type:inline-size;font-family:"Trebuchet MS",Arial,sans-serif;
-  color:#225b56;
+/* Chapter 3 original illustrated introduction, lossless full image. */
+.spread.ch3-intro-spread {
+  isolation:isolate;
+  background:#eaf1db;
 }
-.ch3-opening-illustration{
-  position:absolute;inset:0;width:100%;height:100%;z-index:0;
-  display:block;object-fit:fill;pointer-events:none;user-select:none;
+.spread.ch3-intro-spread .center-gutter { display:none; }
+.ch3-opening {
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  isolation:isolate;
+}
+.ch3-opening-illustration {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  image-rendering:auto;
+  user-select:none;
   -webkit-user-drag:none;
+  pointer-events:none;
 }
-.ch3-opening-lily-bubble,.ch3-opening-pip-bubble{
-  position:absolute;z-index:3;background:#fffdf5;
-  border:clamp(2px,.25cqw,4px) solid #7ebd9c;
-  box-shadow:0 4px 14px #29594e20;
-  border-radius:clamp(15px,2.4cqw,36px);
-  padding:clamp(10px,1.3cqw,19px) clamp(13px,1.65cqw,25px);
-  text-align:left;
+.ch3-opening-next-hotspot {
+  position:absolute;
+  z-index:4;
+  left:57%;
+  top:80%;
+  width:37%;
+  height:12%;
+  padding:0;
+  border:0;
+  border-radius:40px;
+  background:transparent;
+  color:transparent;
+  box-shadow:none;
+  cursor:pointer;
 }
-.ch3-opening-lily-bubble{
-  left:6%;top:9.8%;width:41%;min-height:18%;
-  border-color:#91c6aa;
+.ch3-opening-next-hotspot:hover { background:rgba(255,255,255,.08); }
+.ch3-opening-next-hotspot:focus-visible {
+  outline:4px solid #236953;
+  outline-offset:3px;
+  background:rgba(255,255,255,.1);
 }
-.ch3-opening-pip-bubble{
-  left:9.2%;top:29%;width:37.7%;min-height:11%;
-  border-color:#78c9bc;
+.ch3-opening-screen-reader-only {
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
-.ch3-opening-lily-bubble:after,.ch3-opening-pip-bubble:after{
-  content:"";position:absolute;bottom:-15px;width:19px;height:17px;
-  background:inherit;clip-path:polygon(0 0,100% 0,0 100%);
+@media(max-width:680px) {
+  /* Book reader displays the two halves as successive mobile pages. */
+  .spread.ch3-intro-spread {width:200%;transform:translateX(0)}
+  .spread.ch3-intro-spread.ch3-intro-show-right {transform:translateX(-50%)}
 }
-.ch3-opening-lily-bubble:after{left:11%}
-.ch3-opening-pip-bubble:after{right:13%;transform:scaleX(-1)}
-.ch3-opening-lily-bubble p,.ch3-opening-pip-bubble p{
-  margin:0;color:#1b5552;letter-spacing:-.012em;
-  font-weight:700;font-size:clamp(13px,1.7cqw,23px);
-  line-height:1.26;
+@media(prefers-reduced-motion:reduce) {
+  .ch3-opening-next-hotspot {transition:none}
 }
-.ch3-opening-attribution{
-  display:block;margin-top:5px;text-align:right;
-  color:#4a7e74;font:700 clamp(11px,1.28cqw,17px)/1.16 "Trebuchet MS",Arial,sans-serif;
-}
-.ch3-opening-beautiful{
-  display:inline;border-radius:7px;padding:0 4px 2px;
-  color:#91522f;background:#ffde7c;
-  font-weight:1000;box-decoration-break:clone;-webkit-box-decoration-break:clone;
-  text-shadow:0 1px #fff4c0;
-}
-.ch3-opening-story{
-  position:absolute;z-index:3;left:53.4%;width:43.4%;
-  padding:clamp(8px,1.1cqw,16px) clamp(11px,1.5cqw,23px);
-  border-radius:clamp(12px,2.1cqw,30px);
-  color:#1d5551;text-align:center;
-  font:700 clamp(13px,1.8cqw,25px)/1.19 "Trebuchet MS",Arial,sans-serif;
-  box-shadow:0 3px 12px #365f4b1b;
-}
-.ch3-opening-story-first{
-  top:9%;background:#fffdf4;border:2px solid #f1eadc;
-}
-.ch3-opening-story-surprise{
-  top:17.6%;background:#ffdf7f;border:2px solid #f6d371;font-weight:800;
-}
-.ch3-opening-story-clue{
-  top:26.6%;background:#fffdf4;border:2px solid #f1eadc;
-}
-.ch3-opening-page-button{
-  position:absolute;left:57.5%;bottom:7.7%;width:35.1%;min-height:10%;
-  z-index:5;padding:1.1% 2%;
-  border:3px solid #d2e5af;border-radius:999px;
-  background:linear-gradient(125deg,#f2ffd4,#e5f5bd);
-  color:#155347;white-space:nowrap;text-align:center;
-  font:900 clamp(13px,1.92cqw,27px)/1.12 "Trebuchet MS",Arial,sans-serif;
-  box-shadow:0 5px 0 #508c5c38,0 6px 15px #316b4d30;
-  transition:transform .2s,filter .2s;cursor:pointer;
-}
-.ch3-opening-page-button span{
-  color:#d58042;font-size:1.3em;vertical-align:-.06em;
-  margin-left:.28em;
-}
-.ch3-opening-page-button:hover{transform:translateY(-2px);filter:brightness(1.04)}
-.ch3-opening-page-button:focus-visible{outline:4px solid #ed975d;outline-offset:4px}
-
-@media(max-width:680px){
-  /* Each 4:5 mobile page shows half of this 8:5 picture-book spread. */
-  .spread.ch3-intro-spread{width:200%;transform:translateX(0)!important}
-  .spread.ch3-intro-spread.ch3-intro-show-right{transform:translateX(-50%)!important}
-  .ch3-opening-lily-bubble{left:5%;top:9.5%;width:42%;min-height:17%;padding:10px 12px}
-  .ch3-opening-pip-bubble{left:7%;top:30%;width:40%;padding:8px 11px}
-  .ch3-opening-lily-bubble p,.ch3-opening-pip-bubble p{font-size:clamp(12px,2.05cqw,16px);line-height:1.21}
-  .ch3-opening-attribution{font-size:clamp(10px,1.5cqw,12px);margin-top:1px}
-  .ch3-opening-story{left:52.6%;width:45%;font-size:clamp(12px,2.13cqw,16px);padding:8px 10px}
-  .ch3-opening-story-first{top:10%}
-  .ch3-opening-story-surprise{top:19%}
-  .ch3-opening-story-clue{top:28%}
-  .ch3-opening-page-button{left:55%;width:40%;font-size:clamp(12px,2.16cqw,16px);min-height:8%;bottom:7%;border-width:2px}
-}
-@media(prefers-reduced-motion:reduce){.ch3-opening-page-button{transition:none}}

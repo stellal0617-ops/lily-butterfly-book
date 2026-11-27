@@ -2,50 +2,27 @@ import React from 'react';
 import './Chapter3Intro.css';
 
 /**
- * Chapter 3 opening picture-book spread.
- *
- * The illustrated spread is one image (with the printed text removed).
- * All dialogue, narration, emphasis and the page-turn button are live HTML.
+ * The complete original, high-resolution illustration is displayed as one
+ * lossless image. Its lettering is part of the artwork, not duplicated as HTML.
  */
 export default function Chapter3Intro({onTurnNext}) {
-  return <section className="ch3-opening" aria-label="A Garden for Everyone: story introduction">
+  return <section className="ch3-opening" aria-label="Lily and Pip plan a butterfly garden">
     <img
       className="ch3-opening-illustration"
-      src="/chapter3/chapter3-opening-art.webp"
-      alt=""
+      src="/chapter3/ch3-intro-full.webp"
+      alt="Lily asks Pip to design a beautiful butterfly garden. Pip shows her garden pictures and a new design, but something does not seem quite right. Not everyone in the garden looks happy."
       draggable="false"
       loading="eager"
+      decoding="async"
     />
-
-    <div className="ch3-opening-lily-bubble">
-      <p>
-        “Pip, now that we have everything we need, can you design a{' '}
-        <strong className="ch3-opening-beautiful">beautiful</strong> butterfly garden?”
-      </p>
-      <span className="ch3-opening-attribution">Lily asks.</span>
-    </div>
-
-    <div className="ch3-opening-pip-bubble">
-      <p>“Of course!” says Pip. “I found some garden pictures to help me. Here you go!”</p>
-    </div>
-
-    <div className="ch3-opening-story ch3-opening-story-first">
-      Pip proudly shows Lily his new design.
-    </div>
-    <div className="ch3-opening-story ch3-opening-story-surprise">
-      But something doesn’t seem quite right...
-    </div>
-    <div className="ch3-opening-story ch3-opening-story-clue">
-      Not everyone in the garden looks happy!
-    </div>
-
     <button
+      className="ch3-opening-next-hotspot"
       type="button"
-      className="ch3-opening-page-button"
       onClick={onTurnNext}
-      aria-label="Turn the page to look more closely at Pip's garden"
+      aria-label="Let's take a closer look! Turn the page to the interactive garden"
+      title="Let's take a closer look!"
     >
-      Let’s take a closer look! <span aria-hidden="true">→</span>
+      <span className="ch3-opening-screen-reader-only">Let's take a closer look! Turn the page.</span>
     </button>
   </section>;
 }
