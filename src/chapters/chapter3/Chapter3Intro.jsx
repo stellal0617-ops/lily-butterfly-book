@@ -2,13 +2,14 @@ import React from 'react';
 import './Chapter3Intro.css';
 
 /**
- * The complete original, high-resolution illustration is displayed as one
- * lossless image. Its lettering is part of the artwork, not duplicated as HTML.
+ * One high-quality 8:5 full-bleed illustration matching the chapter's prototype art.
+ * Its lettering is part of the artwork, not duplicated as HTML.
  */
 export default function Chapter3Intro({onTurnNext}) {
   return <section className="ch3-opening" aria-label="Lily and Pip plan a butterfly garden">
     <img
       className="ch3-opening-illustration"
+      width="1536" height="960"
       src="/chapter3/ch3-intro-full.webp"
       alt="Lily asks Pip to design a beautiful butterfly garden. Pip shows her garden pictures and a new design, but something does not seem quite right. Not everyone in the garden looks happy."
       draggable="false"

@@ -1,9 +1,9 @@
-/* Chapter 3 original illustrated introduction, lossless full image. */
+/* Chapter 3 full-bleed illustrated introduction. Text is part of the artwork. */
 .spread.ch3-intro-spread {
   isolation:isolate;
   background:#eaf1db;
 }
-.spread.ch3-intro-spread .center-gutter { display:none; }
+/* Use the same center-gutter shadow as every other two-page spread. */
 .ch3-opening {
   position:relative;
   width:100%;
@@ -25,9 +25,9 @@
   position:absolute;
   z-index:4;
   left:57%;
-  top:80%;
+  top:77%;
   width:37%;
-  height:12%;
+  height:13%;
   padding:0;
   border:0;
   border-radius:40px;
