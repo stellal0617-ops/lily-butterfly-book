@@ -38,10 +38,10 @@ const SHORT_DUAL_LINES={
 'budget+habitat':'A simple wildlife-friendly garden!'
 };
 const DEFAULT_BUBBLES={
-explore:{lily:'Who can live here?',pip:'I made a beautiful garden!'},
+explore:{lily:"Let's see what our garden visitors think!",pip:'I made a beautiful garden, just as you asked!'},
 explain:{lily:'Why did Pip choose these flowers?',pip:'I focused on beauty!'},
 'bias-intro':{lily:'What examples did Pip use?',pip:'I looked at garden pictures!'},
-'bias-cards':{lily:'What do the pictures show?',pip:'I see adult butterflies!'},
+'bias-cards':{lily:'They all show grown-up butterflies! No wonder you forgot the caterpillars.',pip:'I used these pictures to plan the garden!'},
 'bias-choice':{lily:'Which important example is missing?',pip:'I need to see the whole story!'},
 goals:{lily:'What changes with each goal?',pip:'You choose what matters!'},
 combine:{lily:'Can we balance two goals?',pip:'Choose two things that matter!'},
@@ -172,7 +172,7 @@ export default function Game({onComplete,onTurnNext}) {
       'The Adult Butterfly':{lily:'The butterfly found nectar!',pip:'Adults drink nectar from flowers.'},
       'Milkweed Found!':{lily:'The caterpillar found milkweed!',pip:'Milkweed leaves are its food.'},
       'A Hungry Caterpillar':{lily:'The caterpillar is hungry!',pip:'Monarch caterpillars need milkweed.'},
-      'Flowers Are a Clue':{lily:'Pretty flowers! What about young monarchs?',pip:'Adults need nectar; babies need milkweed.'},
+      'Flowers Are a Clue':{lily:"They're lovely! But how much did they cost?",pip:'Look at all the pretty flowers I planted!'},
       'The Goal Matters!':{lily:'Yes! Pip followed my goal.',pip:'Your goal can change my design!'},
       'Think About Lily’s Request':{lily:'Think about my original request.',pip:'I followed the beauty goal.'},
       'One of Pip’s Examples':{lily:'That photo shows an adult butterfly.',pip:'My examples only showed adults!'},
@@ -220,8 +220,8 @@ export default function Game({onComplete,onTurnNext}) {
       ],button:'Keep exploring'});
     }else{
       showFeedback({title:'Flowers Are a Clue',lines:[
-        {speaker:'Lily',text:'Some flowers provide nectar for adults.'},
-        {speaker:'Pip',text:'But monarch caterpillars need milkweed leaves!'}
+        {speaker:'Pip',text:'Look at all the pretty flowers I planted!'},
+        {speaker:'Lily',text:"They're lovely! But how much did they cost?"}
       ],button:'Look around'});
     }
   }
