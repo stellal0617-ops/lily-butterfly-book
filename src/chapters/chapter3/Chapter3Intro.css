@@ -1,0 +1,182 @@
+/* Chapter 3 opening spread: assembled from reusable art layers, live text and real buttons. */
+.spread.ch3-intro-spread{background:#c4ebdf;isolation:isolate}
+.ch3-opening{
+  position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate;
+  container-type:inline-size;
+  color:#275e56;font-family:"Trebuchet MS",Arial,sans-serif;
+}
+.ch3-opening *{box-sizing:border-box}
+.ch3-opening-background{
+  position:absolute;inset:0;width:100%;height:100%;z-index:-3;
+  object-fit:cover;object-position:center center;
+  filter:brightness(1.08) saturate(.95);
+}
+.ch3-opening-soft-sky{
+  position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(218,250,245,.39),rgba(241,252,220,.07) 54%,rgba(136,200,143,.07));
+}
+.ch3-opening-foliage{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ch3-opening-cutout{display:block;position:absolute;object-fit:contain;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.ch3-opening-edge-flowers{z-index:0;filter:drop-shadow(1px 5px 5px #347e4b35)}
+.ch3-opening-edge-left{left:-3%;bottom:-8%;width:23%;height:25%;transform:rotate(-13deg)}
+.ch3-opening-edge-right{right:-6%;bottom:-9%;width:23%;height:27%;transform:rotate(9deg)}
+.ch3-opening-stones{left:41%;bottom:-2%;width:16%;height:17%;opacity:.48}
+.ch3-opening-left,.ch3-opening-right{position:absolute;top:0;bottom:0;width:50%;z-index:1}
+.ch3-opening-left{left:0}
+.ch3-opening-right{right:0}
+
+/* Left page: a request and the robot's response in two real HTML bubbles. */
+.ch3-opening-eyebrow{
+  position:absolute;top:3%;left:5%;width:90%;z-index:5;
+  padding:1.3% 3%;border-radius:50px;
+  background:rgba(255,250,232,.85);text-align:center;
+  border:1px solid #e8d7aa;
+  font:800 clamp(9px,1.05cqw,15px)/1.2 "Trebuchet MS",Arial,sans-serif;
+  letter-spacing:.13em;color:#668e76;
+}
+.ch3-opening-voice{position:absolute;inset:0;z-index:5;pointer-events:none}
+.ch3-opening-balloon{
+  position:absolute;left:5%;width:90%;padding:4% 5.5% 3.3%;
+  background:rgba(255,252,239,.97);
+  border:3px solid #97c5a2;border-radius:28px 32px 29px 33px;
+  box-shadow:0 7px 17px #32684827,inset 0 1px #fff;
+}
+.ch3-opening-balloon:after{
+  content:"";position:absolute;bottom:-17px;left:14%;
+  width:24px;height:21px;background:#fffcef;
+  clip-path:polygon(0 0,100% 0,20% 100%);border-radius:0 0 2px 10px;
+}
+.ch3-opening-lily-balloon{top:12%;border-color:#dfa49c}
+.ch3-opening-pip-balloon{top:36%;left:13%;width:80%;border-color:#74b5a0}
+.ch3-opening-pip-balloon:after{left:auto;right:15%;transform:scaleX(-1)}
+.ch3-opening-speaker{
+  position:absolute;left:4%;top:-18px;padding:5px 14px;
+  border-radius:999px;color:#fff;font:800 clamp(12px,1.18cqw,17px)/1 Arial,sans-serif;
+  box-shadow:0 2px 4px #5b786629;
+}
+.ch3-opening-speaker-lily{background:#d98278}
+.ch3-opening-speaker-pip{background:#3a9d8b}
+.ch3-opening-balloon p{
+  margin:0;text-align:left;
+  font:700 clamp(13px,1.67cqw,23px)/1.26 "Trebuchet MS",Arial,sans-serif;
+  letter-spacing:-.014em;color:#285e56;
+}
+.ch3-opening-beautiful{
+  display:inline;padding:0 5px 1px;
+  border-radius:8px;color:#994835;font-weight:900;
+  background:linear-gradient(transparent 14%,#f9d97c 14%,#ffe8a4 94%,transparent 94%);
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  text-decoration:none;
+}
+.ch3-opening-lily-one{z-index:3;left:-5%;bottom:1.8%;width:43%;height:41%;object-position:left bottom;filter:drop-shadow(3px 7px 4px #3f745034)}
+.ch3-opening-pip-one{z-index:3;right:-3%;bottom:4%;width:29%;height:31%;object-position:right bottom;filter:drop-shadow(3px 7px 4px #3f745034)}
+
+/* Three picture cards are discrete assets, not a single baked image. */
+.ch3-opening-picture-stack{position:absolute;z-index:4;left:33%;bottom:10%;width:37%;height:23%;pointer-events:none}
+.ch3-opening-picture{
+  position:absolute;width:44%;height:75%;padding:6px;background:#fffdf1;
+  border:2px solid #f4e8ce;border-radius:7px;
+  box-shadow:0 6px 10px #3c67543b;overflow:hidden;
+}
+.ch3-opening-picture:before{content:"";position:absolute;inset:6px;z-index:0;border-radius:4px;background:#c5dfcf}
+.ch3-opening-picture .ch3-opening-cutout{position:relative;z-index:1;width:100%;height:100%;object-fit:contain}
+.ch3-opening-picture-pink{left:0;top:12%;transform:rotate(-13deg)}
+.ch3-opening-picture-purple{left:28%;top:0;transform:rotate(6deg)}
+.ch3-opening-picture-butterfly{left:54%;top:19%;transform:rotate(15deg)}
+
+/* Right page: don't reveal the finished garden before the interactive spread. */
+.ch3-opening-narration{
+  position:absolute;z-index:5;left:5%;width:90%;
+  background:rgba(255,253,239,.94);
+  border:2px solid #d8e4bf;border-radius:27px;
+  box-shadow:0 7px 17px #32684825;
+  padding:3.5% 5%;
+}
+.ch3-opening-narration-one{top:10%}
+.ch3-opening-narration-mystery{top:33%;border-color:#edcf9c;background:rgba(255,246,220,.96)}
+.ch3-opening-narration p{
+  margin:0;color:#2a645a;
+  font:700 clamp(13px,1.72cqw,23px)/1.31 "Trebuchet MS",Arial,sans-serif;
+}
+.ch3-opening-narration p+p{margin-top:.46em}
+.ch3-opening-narration-mystery p:first-child{color:#99674a}
+.ch3-opening-narration-mystery strong{font-weight:900;color:#2b6258}
+
+/* Hand-built paper/easel reveal. This deliberately contains no detailed garden. */
+.ch3-opening-easel{
+  position:absolute;z-index:2;left:29%;top:56%;width:43%;height:28%;
+  background:#b57f52;border:clamp(6px,.9cqw,13px) solid #bb8b62;
+  border-radius:10px;box-shadow:0 8px 0 #866543,0 12px 15px #345f4d44;
+  transform:rotate(3deg);
+}
+.ch3-opening-easel-paper{
+  position:absolute;inset:4%;overflow:hidden;border:2px solid #f9e2b6;
+  border-radius:5px;background:linear-gradient(140deg,#fff9e6,#e7f2de);
+}
+.ch3-opening-easel-clip{
+  position:absolute;z-index:3;top:-8%;left:37%;width:26%;height:16%;
+  border-radius:5px 5px 3px 3px;background:#cba06e;box-shadow:inset 0 2px #f6d6a3;
+}
+.ch3-opening-easel-clip:after{
+  content:"";display:block;position:absolute;top:-35%;left:39%;width:22%;height:45%;
+  border:3px solid #bf966c;border-radius:100%;
+}
+.ch3-opening-easel-swirl{
+  position:absolute;border-radius:50%;filter:blur(8px);opacity:.65;
+}
+.ch3-opening-easel-swirl-one{width:66%;height:70%;left:-5%;bottom:0;background:#abd7a2}
+.ch3-opening-easel-swirl-two{width:55%;height:62%;right:-6%;bottom:-8%;background:#f4c8b4}
+.ch3-opening-plan-flower{position:absolute;color:#efadad;font-size:clamp(16px,2.5cqw,35px);opacity:.5}
+.ch3-opening-plan-flower-one{left:19%;bottom:20%}
+.ch3-opening-plan-flower-two{right:21%;bottom:16%}
+.ch3-opening-plan-sparkle{position:absolute;right:16%;top:10%;font-size:clamp(20px,3cqw,42px);color:#c5a369}
+.ch3-opening-plan-fold{
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 37%,rgba(255,251,232,.52) 38%,rgba(255,251,232,.82) 63%,transparent 64%);
+}
+.ch3-opening-easel-leg{position:absolute;top:100%;width:6%;height:24%;background:#9d754b;border-radius:2px}
+.ch3-opening-easel-leg-one{left:27%;transform:rotate(13deg)}
+.ch3-opening-easel-leg-two{right:27%;transform:rotate(-13deg)}
+.ch3-opening-lily-two{z-index:3;right:-5%;bottom:12%;width:37%;height:33%;object-position:right bottom;transform:scaleX(-1);filter:drop-shadow(3px 7px 4px #3f745034)}
+.ch3-opening-pip-two{z-index:3;left:-1%;bottom:12%;width:29%;height:25%;object-position:left bottom;filter:drop-shadow(3px 7px 4px #3f745034)}
+.ch3-opening-question{
+  position:absolute;right:7%;top:57%;z-index:4;
+  color:#e39c49;font:900 clamp(25px,3.5cqw,46px)/1 Georgia,serif;
+  transform:rotate(10deg);text-shadow:2px 2px #ffefc3;
+}
+.ch3-opening-next{
+  position:absolute;z-index:7;left:15%;bottom:3.2%;width:71%;min-height:8%;
+  padding:1.8% 3%;border-radius:999px;
+  border:3px solid #b9d0ab;color:#236553;background:linear-gradient(120deg,#fff9d9,#edfad7);
+  box-shadow:0 5px 0 #478f7735,0 7px 15px #376f4b2a;
+  font:900 clamp(13px,1.92cqw,26px)/1.1 "Trebuchet MS",Arial,sans-serif;
+  transition:transform .2s ease,box-shadow .2s ease;white-space:nowrap;
+}
+.ch3-opening-next span{margin-left:7px;color:#d98b45}
+.ch3-opening-next:hover{transform:translateY(-2px);box-shadow:0 7px 0 #478f7735,0 10px 17px #376f4b36}
+.ch3-opening-next:active{transform:translateY(1px)}
+.ch3-opening-next:focus-visible{outline:4px solid #e09d45;outline-offset:4px}
+
+/* Book switches to one 4:5 page at a time on small screens.
+   A two-page 8:5 spread stays 200% wide and slides left on the right page. */
+@media(max-width:680px){
+  .spread.ch3-intro-spread{width:200%;transform:translateX(0);transition:none}
+  .spread.ch3-intro-spread.ch3-intro-show-right{transform:translateX(-50%)}
+  .ch3-opening-balloon{border-width:2px;padding:5% 5% 4%}
+  .ch3-opening-speaker{top:-12px;padding:4px 9px;font-size:clamp(9px,1.4cqw,12px)}
+  .ch3-opening-balloon p{font-size:clamp(12px,2.12cqw,17px);line-height:1.24}
+  .ch3-opening-lily-balloon{top:15%}
+  .ch3-opening-pip-balloon{top:40%;width:84%;left:10%}
+  .ch3-opening-lily-one{width:42%;height:36%}
+  .ch3-opening-pip-one{width:31%;height:29%}
+  .ch3-opening-picture-stack{bottom:10%;left:29%;width:43%;height:21%}
+  .ch3-opening-narration{padding:5%;border-width:2px}
+  .ch3-opening-narration-one{top:13%}
+  .ch3-opening-narration-mystery{top:38%}
+  .ch3-opening-narration p{font-size:clamp(12px,2.1cqw,17px)}
+  .ch3-opening-easel{top:62%;height:22%}
+  .ch3-opening-lily-two{bottom:12%;height:28%}
+  .ch3-opening-pip-two{bottom:12%;height:23%}
+  .ch3-opening-next{font-size:clamp(12px,2.1cqw,17px);min-height:7%;width:80%;left:10%;bottom:3.5%;border-width:2px}
+}
+@media(prefers-reduced-motion:reduce){.ch3-opening-next{transition:none!important}}

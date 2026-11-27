@@ -1,5 +1,6 @@
 import React from 'react';
 import Game from './Game.jsx';
+import Chapter3Intro from './Chapter3Intro.jsx';
 
 export const chapter3Pages=[
   {
@@ -7,12 +8,8 @@ export const chapter3Pages=[
     chapterLabel:'CHAPTER THREE · HUMAN VALUES & FAIRNESS',
     theme:'garden',illustration:'🦋',title:'A Garden for Everyone',
     subtitle:'Lily and Pip discover that good ideas need careful checking.',
-    Content:()=> <>
-      <p>“Pip, can you design a beautiful butterfly garden?” Lily asks.</p>
-      <p>“Of course!” says Pip. “I found some garden pictures to help me.”</p>
-      <p>But when Pip shows his design, Lily notices something surprising. “Does this garden help every stage of a butterfly's life?”</p>
-      <p>It's time to explore, look at Pip's examples, and make a new plan together.</p>
-    </>
+    // Render as a full-bleed layered spread, not a generic text column.
+    Content:({onTurnNext})=><Chapter3Intro onTurnNext={onTurnNext}/>
   },
   {
     id:'ch3-game',

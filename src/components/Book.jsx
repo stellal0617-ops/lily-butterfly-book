@@ -34,6 +34,12 @@ function OnePage({item,side,onComplete,isMobile,activeSide}){
 }
 function Spread({item,onComplete,onTurnNext,isMobile,activeSide}){
  const isGame=item.kind==='game'; const Content=item.Content;
+ if(item.id==='ch3-intro'){
+   return <div className={`spread ch3-intro-spread ${isMobile&&activeSide==='right'?'ch3-intro-show-right':''}`} data-spread-id={item.id}>
+     <Content onTurnNext={onTurnNext}/>
+     <div className="center-gutter" aria-hidden="true"/>
+   </div>;
+ }
  return <div className={`spread theme-${item.theme||'garden'} ${isGame?'spread-is-game':''}`} data-spread-id={item.id}>
    <OnePage item={item} side="left" onComplete={onComplete} isMobile={isMobile} activeSide={activeSide}/>
    <OnePage item={item} side="right" onComplete={onComplete} isMobile={isMobile} activeSide={activeSide}/>
@@ -75,7 +81,12 @@ export default function Book({spreads,onComplete}){
  const narration=()=>{
   if(!('speechSynthesis'in window))return;
   if(speaking){stopSpeech();return;}
-  const visible=document.querySelector(`.spread-holder[data-position="${index}"] .story-copy`);
+  const spreadSelector=`.spread-holder[data-position="${index}"]`;
+  const pageSelector=mobileRef.current
+    ? (sideRef.current==='left'?' .ch3-opening-left':' .ch3-opening-right')
+    : ' .ch3-opening';
+  const visible=document.querySelector(spreadSelector+' .story-copy')
+    ||document.querySelector(spreadSelector+pageSelector);
   const text=visible?.innerText?.trim()||spreads[index].title;
   stopSpeech();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='en-US';utterance.rate=.88;utterance.onend=()=>setSpeaking(false);utterance.onerror=()=>setSpeaking(false);window.speechSynthesis.speak(utterance);setSpeaking(true);
  };
